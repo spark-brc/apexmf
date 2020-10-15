@@ -157,6 +157,7 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
                         index_col=0)
         sim_stf = sim_stf.loc["REACH"]
         sim_stf_f = sim_stf.loc[sim_stf["sub"] == int(i)]
+        sim_stf_f = sim_stf_f.drop(['sub'], axis=1)
         sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim), freq='M')
         sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
         sim_stf_f.to_csv('cha_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')

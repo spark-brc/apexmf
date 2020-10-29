@@ -25,19 +25,21 @@ def parm_to_tpl_file(parm_infile=None, parm_db=None, tpl_file=None):
     Returns:
         **pandas.DataFrame**: a dataFrame with template file information
     """
-
     if parm_infile is None:
         parm_infile = "PARM1501.DAT"
-
     if parm_db is None:
         parm_db = "apex.parm.xlsx"
-
     if tpl_file is None:
         tpl_file = parm_infile + ".tpl"
-
     parm_df = pd.read_excel(parm_db, usecols=[0, 7], index_col=0, comment="#", engine="openpyxl")
-    parm_sel = parm_df[parm_df['flag'] == 'y'].index.tolist()
+    parm_df['temp_idx'] = parm_df.index
+    parm_df['idx'] = 0
+    for i in range(len(parm_df)):
+        parm_df.iloc[i, 2] = int(parm_df.iloc[i, 1][1:]) 
+    parm_df = parm_df.sort_values(by=['idx'])    
 
+
+    parm_sel = parm_df[parm_df['flag'] == 'y'].index.tolist()
     with open(parm_infile, 'r') as f:
         content = f.readlines()
     content = [x.strip() for x in content] 
@@ -100,7 +102,6 @@ def export_pardb_pest(par):
     return par_f
 
 
-
 def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day):
     """extract a daily simulated streamflow from the output.rch file,
         store it in each channel file.
@@ -112,7 +113,7 @@ def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day)
         - end_day ('str'): simulation end day e.g. '12/31/2005'
 
     Example:
-        sm_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+        apexmf_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
     """
 
     for i in channels:
@@ -144,7 +145,7 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
         - end_day ('str'): simulation end day e.g. '12/31/2005'
 
     Example:
-        sm_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+        apexmf_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
     """
 
     for i in channels:
@@ -165,6 +166,38 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
     print('Finished ...')
 
 
+def extract_month_sed(rch_file, channels, start_day, cali_start_day, cali_end_day):
+    """extract a simulated sediment from the output.rch file,
+       store it in each channel file.
+
+    Args:
+        - rch_file (`str`): the path and name of the existing output file
+        - channels (`list`): channel number in a list, e.g. [9, 60]
+        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1985'
+        - end_day ('str'): simulation end day e.g. '12/31/2005'
+
+    Example:
+        apexmf_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+    """
+
+    for i in channels:
+        sim_stf = pd.read_csv(
+                        rch_file,
+                        delim_whitespace=True,
+                        skiprows=9,
+                        usecols=[0, 1, 12],
+                        names=["idx", "sub", "sed_sim"],
+                        index_col=0)
+        sim_stf = sim_stf.loc["REACH"]
+        sim_stf_f = sim_stf.loc[sim_stf["sub"] == int(i)]
+        sim_stf_f = sim_stf_f.drop(['sub'], axis=1)
+        sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.sed_sim), freq='M')
+        sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
+        sim_stf_f.to_csv('sed_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+        print('sed_{:03d}.txt file has been created...'.format(i))
+    print('Finished ...')
+
+
 def extract_month_baseflow(sub_file, channels, start_day, cali_start_day, cali_end_day):
     """ extract a simulated baseflow rates from the output.sub file,
         store it in each channel file.
@@ -176,7 +209,7 @@ def extract_month_baseflow(sub_file, channels, start_day, cali_start_day, cali_e
         - end_day ('str'): simulation end day e.g. '12/31/2005'
 
     Example:
-        sm_pst_utils.extract_month_baseflow('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+        apexmf_pst_utils.extract_month_baseflow('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
     """
     gwqs = []
     subs = []
@@ -229,12 +262,12 @@ def extract_watertable_sim(grid_ids, start_day, end_day):
     Example:
         pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
     """
-    if not os.path.exists('swatmf_out_MF_obs'):
-        raise Exception("'swatmf_out_MF_obs' file not found")
-    if not os.path.exists('modflow.obs'):
+    if not os.path.exists('MODFLOW/apexmf_out_MF_obs'):
+        raise Exception("'apexmf_out_MF_obs' file not found")
+    if not os.path.exists('MODFLOW/modflow.obs'):
         raise Exception("'modflow.obs' file not found")
     mf_obs_grid_ids = pd.read_csv(
-                        'modflow.obs',
+                        'MODFLOW/modflow.obs',
                         sep=r'\s+',
                         usecols=[3, 4],
                         skiprows=2,
@@ -246,7 +279,7 @@ def extract_watertable_sim(grid_ids, start_day, end_day):
     mf_obs_grid_ids = mf_obs_grid_ids.set_index([3])
 
     mf_sim = pd.read_csv(
-                        'swatmf_out_MF_obs', skiprows=1, sep=r'\s+',
+                        'MODFLOW/apexmf_out_MF_obs', skiprows=1, sep=r'\s+',
                         names=col_names,
                         usecols=grid_ids,
                         )
@@ -259,6 +292,7 @@ def extract_watertable_sim(grid_ids, start_day, end_day):
                         index=True, header=False, float_format='%.7e'
                         )
         print('wt_{}.txt file has been created...'.format(i))
+    print('Finished ...')
 
 
 def cvt_strobd_dtm():
@@ -271,7 +305,7 @@ def cvt_strobd_dtm():
                         na_values=[-999, '']
                         )
     mstf_obd = stf_obd.resample('M').mean()
-    mstf_obd.to_csv('streamflow_month.obd', float_format='%.2f', sep='\t')
+    mstf_obd.to_csv('streamflow_month.obd', float_format='%.2f', sep='\t', na_rep=-999)
 
 
 def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
@@ -311,9 +345,7 @@ def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
                         names=["date", "str_sim"],
                         index_col=0,
                         parse_dates=True)
-
     result = pd.concat([stf_obd, stf_sim], axis=1)
-
     result['tdate'] = pd.to_datetime(result.index)
     result['month'] = result['tdate'].dt.month
     result['year'] = result['tdate'].dt.year
@@ -338,7 +370,7 @@ def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
     return result['{}_ins'.format(col_name)]
 
 
-def mf_obd_to_ins(wt_file, col_name, start_day, end_day):
+def mf_obd_to_ins(wt_file, col_name, start_day, end_day, time_step=None):
     """extract a simulated streamflow from the output.rch file,
         store it in each channel file.
 
@@ -352,12 +384,22 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day):
         pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
     """ 
 
+    if time_step is None:
+        time_step = 'day'
+
+    if time_step == 'month':
+        wt_obd_inf = 'modflow_month.obd'
+    else:
+        wt_obd_inf = 'modflow.obd'
+
+
     mf_obd = pd.read_csv(
-                        'modflow.obd',
+                        'MODFLOW/' + wt_obd_inf,
                         sep='\t',
                         usecols=['date', col_name],
                         index_col=0,
                         parse_dates=True,
+                        na_values=[-999, ""]
                         )
     mf_obd = mf_obd[start_day:end_day]
 
@@ -367,18 +409,22 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day):
                         names=["date", "str_sim"],
                         index_col=0,
                         parse_dates=True)
-
     result = pd.concat([mf_obd, wt_sim], axis=1)
 
     result['tdate'] = pd.to_datetime(result.index)
     result['day'] = result['tdate'].dt.day
     result['month'] = result['tdate'].dt.month
     result['year'] = result['tdate'].dt.year
-    result['ins'] = (
-                    'l1 w !{}_'.format(col_name) + result["year"].map(str) +
-                    result["month"].map('{:02d}'.format) +
-                    result["day"].map('{:02d}'.format) + '!'
-                    )
+    if time_step == 'day':
+        result['ins'] = (
+                        'l1 w !{}_'.format(col_name) + result["year"].map(str) +
+                        result["month"].map('{:02d}'.format) +
+                        result["day"].map('{:02d}'.format) + '!'
+                        )    
+    elif time_step == 'month':
+        result['ins'] = 'l1 w !{}_'.format(col_name) + result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
+    else:
+        print('are you performing a yearly calibration?')
     result['{}_ins'.format(col_name)] = np.where(result[col_name].isnull(), 'l1', result['ins'])
 
     with open(wt_file+'.ins', "w", newline='') as f:

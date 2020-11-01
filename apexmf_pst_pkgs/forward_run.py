@@ -34,6 +34,6 @@ print(35*'+ ' + '\n')
 extract_month_str(rch_file, subs, '1/1/1980', '1/1/1992', '12/31/1999')
 extract_month_sed(rch_file, subs, '1/1/1980', '1/1/1992', '12/31/1999')
 extract_watertable_sim(grid_ids, '1/1/1980', '12/31/1999')
-print(time + ' | Complete ...')
+print(time + ' | Waiting for other workers to be completed ...')
 
 

@@ -36,7 +36,7 @@ def create_riv_par(wd, chns, chg_type=None, rivcd=None, rivbot=None, val=None):
                                                         header=False,
                                                         justify="left")
             )
-    print("'mf_riv.par' file has been exported to the SWAT-MODFLOW working directory!")
+    print("'mf_riv.par' file has been exported to the MODFLOW working directory!")
     return df
 
 

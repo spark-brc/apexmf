@@ -350,7 +350,7 @@ def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
         time_step = 'day'
 
     if time_step == 'month':
-        stf_obd_inf = 'streamflow_month.obd'
+        stf_obd_inf = 'stf_mon.obd'
     else:
         stf_obd_inf = 'streamflow.obd'
     stf_obd = pd.read_csv(

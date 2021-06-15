@@ -280,7 +280,7 @@ def extract_watertable_sim(grid_ids, start_day, end_day):
     Args:
         - rch_file (`str`): the path and name of the existing output file
         - channels (`list`): channel number in a list, e.g. [9, 60]
-        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1985'
+        - start_day ('str'): simulation start day, e.g. '1/1/1985'
         - end_day ('str'): simulation end day e.g. '12/31/2000'
 
     Example:
@@ -412,9 +412,9 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day, time_step=None):
         time_step = 'day'
 
     if time_step == 'month':
-        wt_obd_inf = 'modflow_month.obd'
+        wt_obd_inf = 'dtw_mon.obd'
     else:
-        wt_obd_inf = 'modflow.obd'
+        wt_obd_inf = 'dtw_day.obd'
 
 
     mf_obd = pd.read_csv(

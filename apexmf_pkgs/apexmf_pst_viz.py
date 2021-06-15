@@ -16,7 +16,7 @@ def str_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
         strobd_file = "streamflow.obd"
     else:
         time_step = "M"
-        strobd_file = "streamflow_month.obd."
+        strobd_file = "stf_mon.obd"
     output_rch = pd.read_csv(
                         rch_file, delim_whitespace=True, skiprows=9,
                         usecols=[0, 1, 8], names=["idx", "sub", "simulated"], index_col=0
@@ -104,6 +104,7 @@ def str_plot(plot_df):
         fontsize=12)
     # plt.legend()
     plt.show()
+    return df_nse[0]
 
 
 def get_stats(df):
@@ -150,7 +151,7 @@ def str_plot_test(plot_df, cal_period=None, val_period=None):
         width=20,
         color="blue", align='center', alpha=0.5, zorder=0)
     ax2.set_ylabel("Precipitation $(mm)$",color="blue",fontsize=14)
-    ax.set_ylabel("Stream Discharge $(m^3/day)$",fontsize=14)
+    ax.set_ylabel("Stream Discharge $(m^3/s)$",fontsize=14)
     ax2.invert_yaxis()
     ax2.set_ylim(plot_df.prep.max()*3, 0)
     ax.margins(y=0.2)
@@ -183,7 +184,7 @@ def str_plot_test(plot_df, cal_period=None, val_period=None):
         bbox_to_anchor=(1, 1.13),
         fontsize=12)
     # plt.legend()
-    plt.savefig('mb_wt.png', dpi=300, bbox_inches="tight")
+    # plt.savefig('mb_wt.png', dpi=300, bbox_inches="tight")
     print(os.getcwd())
     
     plt.show()
@@ -532,18 +533,84 @@ def y_fmt(y, pos):
     return y
 
 
+def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
+    
+    if time_step is None:
+        obd_file = 'dtw_day.obd'
+    if time_step == 'month':
+        obd_file = 'dtw_mon.obd'
+    else:
+        obd_file = 'dtw_day.obd'
+    dtw_sim = pd.read_csv(
+                        'wt_{}.txt'.format(grid_id),
+                        sep=r'\s+',
+                        index_col=0,
+                        parse_dates=True,
+                        names=['date', grid_id]
+                        )
+    dtw_obd = pd.read_csv(
+                        'MODFLOW/' + obd_file,
+                        sep='\t',
+                        usecols=['date', 'wt{:05d}'.format(grid_id)],
+                        index_col=0,
+                        parse_dates=True,
+                        na_values=[-999, ""]
+                        )
+    df = pd.concat([dtw_sim, dtw_obd], axis=1)
+    df = df[st_date:ed_date]
+    return df
+
+def dtw_hydrograph(df):
+    fig, ax = plt.subplots()
+
+    ax.plot(df.index, df.iloc[:, 0], label='Simulated', color='green', marker='^', alpha=0.7)
+    ax.scatter(
+        df.index, df.iloc[:, 1], label='Observed',
+        # color='red',
+        facecolors="None", edgecolors='red',
+        lw=1.5,
+        alpha=0.4,
+        # zorder=2,
+        )
+    ax.plot(df.index, df.iloc[:, 1], color='red', alpha=0.4, zorder=2,)
+    cal_nse, cal_rmse, cal_pbias, cal_rsquared = get_stats(df)
+    ax.text(
+        1., 1.05,
+        'NSE: {:.2f} | RMSE: {:.2f} | PBIAS: {:.2f} | R-Squared: {:.2f}'.format(cal_nse[0], cal_rmse[0], cal_pbias[0], cal_rsquared),
+        horizontalalignment='right',fontsize=12,
+        bbox=dict(facecolor='green', alpha=0.5),
+        transform=ax.transAxes
+        )
+    ax.text(
+        0., 1.05,
+        '{}'.format(df.columns[0]),
+        horizontalalignment='left',fontsize=12,
+        bbox=dict(facecolor='white', alpha=0.5),
+        transform=ax.transAxes
+        )
+    ax.tick_params(axis='both', labelsize=12)
+    fig.tight_layout()
+    plt.savefig('dtw_{}.png'.format(df.columns[0]), dpi=150, bbox_inches="tight")
+    print('saved dtw_{}.png ...'.format(df.columns[0]))
+    # plt.show()
+
+
 if __name__ == '__main__':
-    wd = "D:/Projects/Watersheds/Animas/Analysis/APEX-MODFLOWs/calibrations/qam_test/man_adjust_k01"
+    wd = "D:/Projects/Watersheds/Green/Analysis/APEX-MODFLOWs/calibrations/gr_210614/APEX-MODFLOW"
     os.chdir(wd)
-    warm_grids = [3237, 3770, 4373, 5895, 6273]
-    warm_obds = ['gw_162', 'gw_160', 'gw_157', 'gw_124', 'gw_098']
-    cals_grids = [5895, 6273]
-    cals_obds = ['gw_124', 'gw_098']
 
-    # warm_df = wt_tot_df2('1/1/1980', '1/1/1980', '12/31/1990', warm_grids, warm_obds)
-    # cali_df = wt_tot_df2('1/1/1980', '1/1/1980', '12/31/1999', warm_grids, warm_obds)
-    only_cali = wt_tot_df2('1/1/1980', '1/1/1980', '12/31/1999', cals_grids, cals_obds)
-    # vali_df = wt_tot_df2('1/1/1980', '1/1/2000', '12/31/2004', warm_grids, warm_obds)
+    mf_obs_grid_ids = pd.read_csv(
+                        'MODFLOW/modflow.obs',
+                        sep=r'\s+',
+                        usecols=[3, 4],
+                        skiprows=2,
+                        header=None
+                        )
+    mf_grids = mf_obs_grid_ids.iloc[:, 0].tolist()
+    grid_id = mf_grids[4]
 
+    st_date='1/1/1995'
+    ed_date='12/31/2012'
 
-    print(only_cali)
+    df = dtw_sim_obd(st_date, ed_date, grid_id, time_step=None)
+    dtw_hydrograph(df)

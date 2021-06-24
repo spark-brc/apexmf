@@ -557,6 +557,9 @@ def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
                         na_values=[-999, ""]
                         )
     df = pd.concat([dtw_sim, dtw_obd], axis=1)
+    # NOTE: temp
+    df['wt{:05d}'.format(grid_id)].fillna(0, inplace=True)
+
     df = df[st_date:ed_date]
     return df
 

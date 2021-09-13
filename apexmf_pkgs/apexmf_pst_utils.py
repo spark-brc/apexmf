@@ -185,7 +185,7 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
         sim_stf_f = sim_stf_f.drop(['sub'], axis=1)
         sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim), freq='M')
         sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
-        sim_stf_f.to_csv('cha_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+        sim_stf_f.to_csv('stf_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('cha_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
 
@@ -273,7 +273,7 @@ def extract_month_baseflow(sub_file, channels, start_day, cali_start_day, cali_e
     print('Finished ...\n')
 
 
-def extract_watertable_sim(grid_ids, start_day, end_day):
+def extract_depth_to_water(grid_ids, start_day, end_day):
     """extract a simulated streamflow from the output.rch file,
         store it in each channel file.
 
@@ -311,11 +311,12 @@ def extract_watertable_sim(grid_ids, start_day, end_day):
     mf_sim = mf_sim[start_day:end_day]
     for i in grid_ids:
         elev = mf_obs_grid_ids.loc[i].values  # use land surface elevation to get depth to water
-        (mf_sim.loc[:, i] - elev).to_csv(
-                        'wt_{}.txt'.format(i), sep='\t', encoding='utf-8',
+
+        abs(elev - mf_sim.loc[:, i]).to_csv(
+                        'dtw_{}.txt'.format(i), sep='\t', encoding='utf-8',
                         index=True, header=False, float_format='%.7e'
                         )
-        print('wt_{}.txt file has been created...'.format(i))
+        print('dtw_{}.txt file has been created...'.format(i))
     print('Finished ...')
 
 

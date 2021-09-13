@@ -13,7 +13,7 @@ def str_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
     
     if time_step is None:
         time_step = "D"
-        strobd_file = "streamflow.obd"
+        strobd_file = "stf_day.obd"
     else:
         time_step = "M"
         strobd_file = "stf_mon.obd"
@@ -559,6 +559,7 @@ def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
     df = pd.concat([dtw_sim, dtw_obd], axis=1)
     # NOTE: temp
     df['wt{:05d}'.format(grid_id)].fillna(0, inplace=True)
+    #
 
     df = df[st_date:ed_date]
     return df
@@ -585,7 +586,7 @@ def dtw_hydrograph(df):
         transform=ax.transAxes
         )
     ax.text(
-        0., 1.05,
+        0., 1.1,
         '{}'.format(df.columns[0]),
         horizontalalignment='left',fontsize=12,
         bbox=dict(facecolor='white', alpha=0.5),
@@ -616,4 +617,4 @@ if __name__ == '__main__':
     ed_date='12/31/2012'
 
     df = dtw_sim_obd(st_date, ed_date, grid_id, time_step=None)
-    dtw_hydrograph(df)
+    # dtw_hydrograph(df)

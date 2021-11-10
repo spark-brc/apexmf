@@ -114,8 +114,9 @@ def export_pardb_pest(par):
     parm_sel = parm_df[parm_df['flag'] == 'y']
     par_draft = pd.concat([par, parm_sel], axis=1)
     # filtering
-    par_draft['parval1'] = np.where((par_draft.cali_initial.isna()), par_draft.parval1, par_draft.cali_initial)
+    
     par_draft['parval1'] = np.where((par_draft.default_initial.isna()), par_draft.parval1, par_draft.default_initial)
+    par_draft['parval1'] = np.where((par_draft.cali_initial.isna()), par_draft.parval1, par_draft.cali_initial)
     par_draft['parval1'] = np.where((par_draft.parval1 == 0), 0.00001, par_draft.parval1)
     par_draft['parlbnd'] = np.where((par_draft.cali_lower.isna()), par_draft.parlbnd, par_draft.cali_lower)
     par_draft['parlbnd'] = np.where((par_draft.absolute_lower.isna()), par_draft.parlbnd, par_draft.absolute_lower)
@@ -124,6 +125,36 @@ def export_pardb_pest(par):
     par_draft['parubnd'] = np.where((par_draft.absolute_upper.isna()), par_draft.parubnd, par_draft.absolute_upper)
     par_f =  par_draft.dropna(axis=1)
     return par_f
+
+
+def update_hk_pars(par):
+    hk_df = pd.read_csv(
+                        'MODFLOW\hk0pp.dat',
+                        sep='\s+',
+                        usecols=[4],
+                        names=['hk_temp']
+
+                        )
+    hk_df.index = [f"hk{i:03d}" for i in range(len(hk_df))]
+    par_draft = pd.concat([par, hk_df], axis=1)
+    par_draft['parval1'] = np.where((par_draft.hk_temp.isna()), par_draft.parval1, par_draft.hk_temp)
+    par_f =  par_draft.dropna(axis=1)
+    return par_f
+
+def update_sy_pars(par):
+    sy_df = pd.read_csv(
+                        'MODFLOW\sy0pp.dat',
+                        sep='\s+',
+                        usecols=[4],
+                        names=['sy_temp']
+
+                        )
+    sy_df.index = [f"sy{i:03d}" for i in range(len(sy_df))]
+    par_draft = pd.concat([par, sy_df], axis=1)
+    par_draft['parval1'] = np.where((par_draft.sy_temp.isna()), par_draft.parval1, par_draft.sy_temp)
+    par_f =  par_draft.dropna(axis=1)
+    return par_f
+
 
 
 def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day):
@@ -186,7 +217,7 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
         sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim), freq='M')
         sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
         sim_stf_f.to_csv('stf_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
-        print('cha_{:03d}.txt file has been created...'.format(i))
+        print('stf_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
 
 
@@ -284,7 +315,7 @@ def extract_depth_to_water(grid_ids, start_day, end_day):
         - end_day ('str'): simulation end day e.g. '12/31/2000'
 
     Example:
-        pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
+        pest_utils.extract_depth_to_water('path', [9, 60], '1/1/1993', '12/31/2000')
     """
     if not os.path.exists('MODFLOW/apexmf_out_MF_obs'):
         raise Exception("'apexmf_out_MF_obs' file not found")
@@ -312,7 +343,9 @@ def extract_depth_to_water(grid_ids, start_day, end_day):
     for i in grid_ids:
         elev = mf_obs_grid_ids.loc[i].values  # use land surface elevation to get depth to water
 
-        abs(elev - mf_sim.loc[:, i]).to_csv(
+
+        (mf_sim.loc[:, i] - elev).to_csv(
+        # abs(elev - mf_sim.loc[:, i]).to_csv(
                         'dtw_{}.txt'.format(i), sep='\t', encoding='utf-8',
                         index=True, header=False, float_format='%.7e'
                         )
@@ -340,8 +373,8 @@ def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
     Args:
         - rch_file (`str`): the path and name of the existing output file
         - channels (`list`): channel number in a list, e.g. [9, 60]
-        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1993'
-        - end_day ('str'): simulation end day e.g. '12/31/2000'
+        - start_day ('str'): calibration start day, e.g. '1/1/1993'
+        - end_day ('str'): calibration end day e.g. '12/31/2000'
         - time_step (`str`): day, month, year
 
     Example:
@@ -402,7 +435,7 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day, time_step=None):
     Args:
         - rch_file (`str`): the path and name of the existing output file
         - channels (`list`): channel number in a list, e.g. [9, 60]
-        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1993'
+        - start_day ('str'): simulation start day, e.g. '1/1/1993'
         - end_day ('str'): simulation end day e.g. '12/31/2000'
 
     Example:

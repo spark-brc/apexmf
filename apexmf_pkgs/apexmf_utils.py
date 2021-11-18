@@ -61,40 +61,107 @@ def get_all_scenario_lists(wd):
     return scn_nams, full_paths    
 
 
-def all_strs(wd, sub_number, start_date, obd_nam, time_step=None):
+def all_strs(wd, rch_file, rch_num, start_date, obd_nam, time_step=None):
     scn_nams, full_paths = get_all_scenario_lists(wd)
     if time_step is None:
         time_step = "D"
-        strobd_file = "streamflow.obd"
+        strobd_file = "stf_day.obd"
     else:
         time_step = "M"
-        strobd_file = "streamflow_month.obd"
+        strobd_file = "stf_mon.obd"
     tot_df = pd.DataFrame()
     for scn_nam, p in zip(scn_nams, full_paths):
         os.chdir(p)
         print("Folder changed to {}".format(p))
-        df = pd.read_csv(
-                    os.path.join("output.rch"),
-                    delim_whitespace=True,
-                    skiprows=9,
-                    usecols=[1, 3, 6],
-                    names=["date", "filter", "str_sim"],
-                    index_col=0)
-        df = df.loc[sub_number]
-        if time_step == 'M':
-            df = df[df["filter"] < 13]
-        df.index = pd.date_range(start_date, periods=len(df.str_sim), freq=time_step)
+       
+        output_rch = pd.read_csv(
+                            rch_file, delim_whitespace=True, skiprows=9,
+                            usecols=[0, 1, 8], names=["idx", "sub", "simulated"], index_col=0
+                            )
+        df = output_rch.loc["REACH"]        
+        df = df.loc[df['sub'] == int(rch_num)]
+        df = df.drop('sub', axis=1)
+        df.index = pd.date_range(start_date, periods=len(df), freq=time_step)
+        
 
-        df.rename(columns = {'str_sim':'{}_sub_{}'.format(scn_nam, sub_number)}, inplace = True)
+        df.rename(columns = {'simulated':'{}_sub_{}'.format(scn_nam, rch_num)}, inplace = True)
         tot_df = pd.concat(
-            [tot_df, df['{}_sub_{}'.format(scn_nam, sub_number)]], axis=1,
+            [tot_df, df['{}_sub_{}'.format(scn_nam, rch_num)]], axis=1,
             sort=False
             )
     print('Finished!')
     return tot_df
 
 
-def all_seds(wd, sub_number, start_date, obd_nam, time_step=None):
+def all_evts(wd, rch_file, rch_num, start_date, obd_nam, time_step=None):
+    scn_nams, full_paths = get_all_scenario_lists(wd)
+    if time_step is None:
+        time_step = "D"
+        strobd_file = "stf_day.obd"
+    else:
+        time_step = "M"
+        strobd_file = "stf_mon.obd"
+    tot_df = pd.DataFrame()
+    for scn_nam, p in zip(scn_nams, full_paths):
+        os.chdir(p)
+        print("Folder changed to {}".format(p))
+       
+        output_rch = pd.read_csv(
+                            rch_file, delim_whitespace=True, skiprows=9,
+                            usecols=[0, 1, 9], names=["idx", "sub", "simulated"], index_col=0
+                            )
+        df = output_rch.loc["REACH"]        
+        df = df.loc[df['sub'] == int(rch_num)]
+        df = df.drop('sub', axis=1)
+        df.index = pd.date_range(start_date, periods=len(df), freq=time_step)
+        
+
+        df.rename(columns = {'simulated':'{}_sub_{}'.format(scn_nam, rch_num)}, inplace = True)
+        tot_df = pd.concat(
+            [tot_df, df['{}_sub_{}'.format(scn_nam, rch_num)]], axis=1,
+            sort=False
+            )
+    print('Finished!')
+    return tot_df
+
+
+def all_seds(wd, rch_file, rch_num, start_date, obd_nam, time_step=None):
+    scn_nams, full_paths = get_all_scenario_lists(wd)
+    if time_step is None:
+        time_step = "D"
+        strobd_file = "stf_day.obd"
+    else:
+        time_step = "M"
+        strobd_file = "stf_mon.obd"
+    tot_df = pd.DataFrame()
+    for scn_nam, p in zip(scn_nams, full_paths):
+        os.chdir(p)
+        print("Folder changed to {}".format(p))
+       
+        output_rch = pd.read_csv(
+                            rch_file, delim_whitespace=True, skiprows=9,
+                            usecols=[0, 1, 13], names=["idx", "sub", "simulated"], index_col=0
+                            )
+        df = output_rch.loc["REACH"]        
+        df = df.loc[df['sub'] == int(rch_num)]
+        df = df.drop('sub', axis=1)
+        df.index = pd.date_range(start_date, periods=len(df), freq=time_step)
+        
+
+        df.rename(columns = {'simulated':'{}_sub_{}'.format(scn_nam, rch_num)}, inplace = True)
+        tot_df = pd.concat(
+            [tot_df, df['{}_sub_{}'.format(scn_nam, rch_num)]], axis=1,
+            sort=False
+            )
+    print('Finished!')
+    return tot_df
+
+
+
+
+
+
+def swatall_seds(wd, sub_number, start_date, obd_nam, time_step=None):
     scn_nams, full_paths = get_all_scenario_lists(wd)
     if time_step is None:
         time_step = "D"
@@ -131,10 +198,10 @@ def str_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
     
     if time_step is None:
         time_step = "D"
-        strobd_file = "streamflow.obd"
+        strobd_file = "stf_day.obd"
     else:
         time_step = "M"
-        strobd_file = "streamflow_month.obd."
+        strobd_file = "stf_mon.obd."
     output_rch = pd.read_csv(
                         rch_file, delim_whitespace=True, skiprows=9,
                         usecols=[0, 1, 8], names=["idx", "sub", "simulated"], index_col=0

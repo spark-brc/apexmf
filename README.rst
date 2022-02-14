@@ -4,7 +4,7 @@ apexmf
 .. image:: https://img.shields.io/pypi/v/apexmf?color=blue
    :target: https://pypi.python.org/pypi/apexmf
    :alt: PyPI Version
-.. image:: https://img.shields.io/pypi/l/apexmf
+.. image:: https://img.shields.io/pypi/l/apexmf?color=orange
    :target: https://opensource.org/licenses/BSD-3-Clause
    :alt: PyPI - License
 .. image:: https://zenodo.org/badge/304147230.svg

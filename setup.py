@@ -12,28 +12,26 @@ with open("README.rst", "r") as fd:
     long_desc = fd.read()
 
 
-VERSION = '0.0.13'
-DESCRIPTION = 'swatmf is a set of python modules for SWAT-MODFLOW model evaluation and parameter estimation.'
-# LONG_DESCRIPTION = 'A package that allows to work with SWAT-MODFLOW model'
+VERSION = '0.0.1'
+DESCRIPTION = 'apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.'
+# LONG_DESCRIPTION = 'A package that allows to work with apex-MODFLOW model'
 
 license = "BSD-3-Clause"
 # Setting up
 setup(
-    name="swatmf",
+    name="apexmf",
     version=VERSION,
     author="Seonggyu Park",
     author_email="<envpsg@gmail.com>",
     description=DESCRIPTION,
     long_description=long_desc,
     long_description_content_type="text/x-rst",
-    download_url="https://pypi.org/project/swatmf",
+    download_url="https://pypi.org/project/apexmf",
     project_urls={
-        "Bug Tracker": "https://github.com/spark-brc/swatmf/issues",
-        "Source Code": "https://github.com/spark-brc/swatmf",
-        "Documentation": "https://github.com/spark-brc/swatmf",
+        "Bug Tracker": "https://github.com/spark-brc/apexmf/issues",
+        "Source Code": "https://github.com/spark-brc/apexmf",
+        "Documentation": "https://github.com/spark-brc/apexmf",
     },
-
-
     # include_package_data=True,
     package_data = {
         'opt_files': ['*'],
@@ -42,7 +40,7 @@ setup(
     install_requires=[
         'pandas', 'numpy', 'pyemu', 'flopy', 'scipy', 'matplotlib',
         'hydroeval', 'tqdm', 'termcolor'],
-    keywords=['python', 'SWAT-MODFLOW', 'PEST'],
+    keywords=['python', 'APEX-MODFLOW', 'PEST'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Education",

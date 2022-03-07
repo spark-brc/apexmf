@@ -45,7 +45,8 @@ def forward_run(
     if gw_level == 'y':
         print('\n' + 35*'+ ')
         print(time + ' | simulation successfully completed | extracting depth to water values...')
-        print(35*'+ ' + '\n')        
+        print(35*'+ ' + '\n')
+    elif gw_level      
         apexmf_pst_utils.extract_depth_to_water(grids, sim_start, cal_end)
     if lai_file != 'n' and time_step == 'day':
         sao_df = apexmf_utils.read_sao(lai_file)
@@ -80,10 +81,14 @@ if __name__ == '__main__':
     if gw_level == 'y':
         grids = apexmf_con.loc['grids','vals'].strip('][').split(', ')
         grids = [int(i) for i in grids]
+    elif gw_level == 'n':
+        grids = apexmf_con.loc['grids','vals']
     lai_file = apexmf_con.loc['lai_file','vals']
     if lai_file != 'n':
         lai_subs = apexmf_con.loc['lai_subs','vals'].strip('][').split(', ')
-        lai_subs = [int(i) for i in lai_subs]  
+        lai_subs = [int(i) for i in lai_subs] 
+    elif lai_file == 'n':
+        lai_subs = apexmf_con.loc['lai_subs','vals']
 
     riv_parm = apexmf_con.loc['riv_parm','vals']
     baseflow = apexmf_con.loc['baseflow','vals']

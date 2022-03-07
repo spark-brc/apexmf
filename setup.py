@@ -12,7 +12,7 @@ with open("README.rst", "r") as fd:
     long_desc = fd.read()
 
 
-VERSION = '0.0.4'
+VERSION = '0.0.6'
 DESCRIPTION = 'apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.'
 # LONG_DESCRIPTION = 'A package that allows to work with apex-MODFLOW model'
 
@@ -32,7 +32,7 @@ setup(
         "Source Code": "https://github.com/spark-brc/apexmf",
         "Documentation": "https://github.com/spark-brc/apexmf",
     },
-    # include_package_data=True,
+    include_package_data=True,
     package_data = {
         'opt_files': ['*'],
     },

@@ -159,10 +159,6 @@ def all_seds(wd, rch_file, rch_num, start_date, obd_nam, time_step=None):
     return tot_df
 
 
-
-
-
-
 def swatall_seds(wd, sub_number, start_date, obd_nam, time_step=None):
     scn_nams, full_paths = get_all_scenario_lists(wd)
     if time_step is None:
@@ -481,12 +477,36 @@ def export_gwsw_swatToExcel(wd, startDate, scdate, ecdate, nsubs):
 
 
 def cvtHd5ToArray(wd, f):
-
     hf = hdf.File(os.path.join(wd, f), 'r')
     # data = hf.get('Arrays/top1').value
     data = np.array(hf["River": 1])
     hf.close()
     return data
+
+def read_sao(sao_file):
+    # get number of rows until end of Bigsub
+    with open(sao_file, "r") as f:
+        for num, line in enumerate(f, 1):
+            if line.strip().startswith('AVEAN'):
+                break
+    nrows = (num-1)-9
+    # get col nams until first CPNM-
+    with open(sao_file, 'r') as f:
+        for line in f.readlines():
+            if line.strip() != "":
+                if line.strip().split()[0] == 'SAID':
+                    l = ['idx']+line.strip().split()
+    cp_cols = l[:l.index("CPNM-")+1]
+    df_ = pd.read_csv(
+                    sao_file, delim_whitespace=True, skiprows=9, nrows=nrows,
+                    usecols=[i for i in range(len(cp_cols))], header=None,
+                    )
+    df_.columns = cp_cols
+    return df_
+
+
+
+
 
 
 if __name__ == '__main__':

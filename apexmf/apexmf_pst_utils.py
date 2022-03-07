@@ -11,6 +11,119 @@ import shutil
 import socket
 import multiprocessing as mp
 import csv
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+from termcolor import colored
+
+
+opt_files_path = os.path.join(
+                    os.path.dirname(os.path.abspath( __file__ )),
+                    'opt_files')
+foward_path = os.path.dirname(os.path.abspath( __file__ ))
+
+
+def create_apexmf_con(
+                wd,  sim_start, cal_start, cal_end,
+                cha_file=None, subs=None,
+                gw_level=None, grids=None,
+                lai_file=None, lai_subs=None,
+                riv_parm=None,  baseflow=None,
+                time_step=None
+                ):
+    """create apexmf.con file containg APEX-MODFLOW model PEST initial settings
+
+    Args:
+        wd (`str`): APEX-MODFLOW working directory
+        subs (`list`): reach numbers to be extracted
+        grids (`list`): grid numbers to be extracted
+        sim_start (`str`): simulation start date e.g. '1/1/2000'
+        cal_start (`str`): calibration start date e.g., '1/1/2001'
+        cal_end (`str`): calibration end date e.g., '12/31/2005'
+        lai_subs (`list`): lai sub numbers to be extracted
+        time_step (`str`, optional): model time step. Defaults to None ('day'). e.g., 'day', 'month', 'year'
+        riv_parm (`str`, optional): river parameter activation. Defaults to None ('n').
+        depth_to_water (`str`, optional): extracting simulated depth to water activation. Defaults to None ('n').
+        baseflow (`str`, optional): extracting baseflow ratio activation. Defaults to None ('n').
+
+    Returns:
+        dataframe: return APEX-MODFLOW PEST configure settings as dataframe and exporting it as apexmf.con file.
+    """
+    if cha_file is None:
+        cha_file = 'n'
+        subs = 'n'
+    if gw_level is None:
+        gw_level ='n'
+        grids = 'n'
+    else:
+        gw_level = 'y'
+    if lai_file is None:
+        lai_file = 'n'
+        lai_subs = 'n'
+    if time_step is None:
+        time_step = 'day'
+    if riv_parm is None:
+        riv_parm = 'n'
+    else:
+        riv_parm = 'y'
+    if baseflow is None:
+        baseflow = 'n'
+    else:
+        baseflow = 'y'
+    col01 = [
+        'wd', 'sim_start', 'cal_start', 'cal_end',
+        'cha_file', 'subs', 
+        'gw_level', 'grid_ids',
+        'lai_file', 'lai_subs',
+        'riv_parm', 'baseflow',
+        'time_step',
+        ]
+    col02 = [
+        wd, sim_start, cal_start, cal_end, 
+        cha_file, subs,
+        gw_level, grids,
+        lai_file, lai_subs, 
+        riv_parm, baseflow,
+        time_step
+        ]
+    df = pd.DataFrame({'names': col01, 'vals': col02})
+    with open(os.path.join(wd, 'apexmf.con'), 'w', newline='') as f:
+        f.write("# apexmf.con created by apexmf\n")
+        df.to_csv(f, sep='\t', encoding='utf-8', index=False, header=False)
+    return df
+
+def init_setup(wd):
+    filesToCopy = [
+        "beopest64.exe",
+        "i64pest.exe",
+        "i64pwtadj1.exe",
+        "crop.parm",
+        "apex.parm.xlsx"
+        ]
+    
+    suffix = ' passed'
+    # print(" Creating 'backup' folder ...",  end='\r', flush=True)
+    # if not os.path.isdir(os.path.join(wd, 'backup')):
+    #     os.makedirs(os.path.join(wd, 'backup'))
+    #     filelist =  os.listdir(apexwd)
+    #     for i in tqdm(filelist):
+    #         shutil.copy2(os.path.join(apexwd, i), os.path.join(wd, 'backup'))
+    # print(" Creating 'backup' folder ..." + colored(suffix, 'green'))
+    # print(" Creating 'echo' folder ...",  end='\r', flush=True)
+    # if not os.path.isdir(os.path.join(wd, 'echo')):
+    #     os.makedirs(os.path.join(wd, 'echo'))
+    # print(" Creating 'echo' folder ..." + colored(suffix, 'green'))
+    # print(" Creating 'sufi2.in' folder ...",  end='\r', flush=True)
+    # if not os.path.isdir(os.path.join(wd, 'sufi2.in')):
+    #     os.makedirs(os.path.join(wd, 'sufi2.in'))
+    # print(" Creating 'sufi2.in' folder ..."  + colored(suffix, 'green'))
+
+    for j in filesToCopy:
+        if not os.path.isfile(os.path.join(wd, j)):
+            shutil.copy2(os.path.join(opt_files_path, j), os.path.join(wd, j))
+            print(" '{}' file copied ...".format(j) + colored(suffix, 'green'))
+    if not os.path.isfile(os.path.join(wd, 'forward_run.py')):
+        shutil.copy2(os.path.join(foward_path, 'forward_run.py'), os.path.join(wd, 'forward_run.py'))
+        print(" '{}' file copied ...".format('forward_run.py') + colored(suffix, 'green'))        
 
 
 def fix_riv_pkg(wd, riv_file):
@@ -36,129 +149,8 @@ def fix_riv_pkg(wd, riv_file):
     with open(os.path.join(wd, output_file), "w") as fp:
         fp.write("\n".join(new_lines))    
 
-
-def parm_to_tpl_file(parm_infile=None, parm_db=None, tpl_file=None):
-    """write a template file for a APEX parameter file (PARM1501.DAT)
-
-    Args:
-        parm_infile (`str`, optional): path or name of the existing parm file. Defaults to None.
-        parm_db (`str`, optional): DB for APEX parameters (apex.parm.xlsx). Defaults to None.
-        tpl_file (`str`, optional): template file to write. If None, use
-        `parm_infile` + ".tpl". Defaults to None.
-
-    Returns:
-        **pandas.DataFrame**: a dataFrame with template file information
-    """
-    if parm_infile is None:
-        parm_infile = "PARM1501.DAT"
-    if parm_db is None:
-        parm_db = "apex.parm.xlsx"
-    if tpl_file is None:
-        tpl_file = parm_infile + ".tpl"
-    parm_df = pd.read_excel(parm_db, usecols=[0, 7], index_col=0, comment="#", engine="openpyxl")
-    parm_df = parm_df.loc[parm_df.index.notnull()]
-    parm_df['temp_idx'] = parm_df.index
-    parm_df['idx'] = 0
-    for i in range(len(parm_df)):
-        parm_df.iloc[i, 2] = int(parm_df.iloc[i, 1][1:]) 
-    parm_df = parm_df.sort_values(by=['idx'])    
-
-
-    parm_sel = parm_df[parm_df['flag'] == 'y'].index.tolist()
-    with open(parm_infile, 'r') as f:
-        content = f.readlines()
-    content = [x.strip() for x in content] 
-    upper_pars = content[:35]
-    core_pars = content[35:46]
-    lower_pars = content[46:]
-    # core_lst = [i for c in core_pars for i in c.split()]
-    core_lst = []
-    for i in core_pars:
-        for j in i.split():
-            core_lst.append(j)
-    parm_df['nam'] = parm_df.index.tolist()
-    parm_df['value'] = core_lst
-    parm_df['tpl'] = np.where(
-        parm_df['flag'] == 'n',
-        parm_df['value'].apply(lambda x:"{0:6s}".format(x)),
-        parm_df.nam.apply(lambda x:"~{0:4s}~".format(x))
-        )
-    parm_lst = parm_df.tpl.tolist()
-    parm_arr = np.reshape(parm_lst, (11, 10))
-    parm_arr_df = pd.DataFrame(parm_arr)
-    tpl_file = parm_infile + ".tpl"
-
-    TEMP_LONG = lambda x: "{0:<6s} ".format(str(x))
-    fmt = [TEMP_LONG]*10
-    with open(tpl_file, 'w') as f:
-        f.write("ptf ~\n")
-        for row in upper_pars:
-            f.write(row + '\n')
-        f.write(parm_arr_df.to_string(
-                                    # col_space=0,
-                                    # formatters=fmt,
-                                    index=False,
-                                    header=False,
-                                    # justify="right"
-                                    ))
-        f.write('\n')
-        for row in lower_pars:
-            f.write(row + '\n')
-    return parm_arr_df
-
-
-def export_pardb_pest(par):
-    parm_df =  pd.read_excel(
-        "apex.parm.xlsx", index_col=0, usecols=[x for x in range(8)],
-        comment='#', engine='openpyxl', na_values=[-999, '']
-        )
-    parm_sel = parm_df[parm_df['flag'] == 'y']
-    par_draft = pd.concat([par, parm_sel], axis=1)
-    # filtering
-    
-    par_draft['parval1'] = np.where((par_draft.default_initial.isna()), par_draft.parval1, par_draft.default_initial)
-    par_draft['parval1'] = np.where((par_draft.cali_initial.isna()), par_draft.parval1, par_draft.cali_initial)
-    par_draft['parval1'] = np.where((par_draft.parval1 == 0), 0.00001, par_draft.parval1)
-    par_draft['parlbnd'] = np.where((par_draft.cali_lower.isna()), par_draft.parlbnd, par_draft.cali_lower)
-    par_draft['parlbnd'] = np.where((par_draft.absolute_lower.isna()), par_draft.parlbnd, par_draft.absolute_lower)
-    par_draft['parlbnd'] = np.where((par_draft.parlbnd == 0), 0.00001, par_draft.parlbnd)
-    par_draft['parubnd'] = np.where((par_draft.cali_upper.isna()), par_draft.parubnd, par_draft.cali_upper)
-    par_draft['parubnd'] = np.where((par_draft.absolute_upper.isna()), par_draft.parubnd, par_draft.absolute_upper)
-    par_f =  par_draft.dropna(axis=1)
-    return par_f
-
-
-def update_hk_pars(par):
-    hk_df = pd.read_csv(
-                        'MODFLOW\hk0pp.dat',
-                        sep='\s+',
-                        usecols=[4],
-                        names=['hk_temp']
-
-                        )
-    hk_df.index = [f"hk{i:03d}" for i in range(len(hk_df))]
-    par_draft = pd.concat([par, hk_df], axis=1)
-    par_draft['parval1'] = np.where((par_draft.hk_temp.isna()), par_draft.parval1, par_draft.hk_temp)
-    par_f =  par_draft.dropna(axis=1)
-    return par_f
-
-def update_sy_pars(par):
-    sy_df = pd.read_csv(
-                        'MODFLOW\sy0pp.dat',
-                        sep='\s+',
-                        usecols=[4],
-                        names=['sy_temp']
-
-                        )
-    sy_df.index = [f"sy{i:03d}" for i in range(len(sy_df))]
-    par_draft = pd.concat([par, sy_df], axis=1)
-    par_draft['parval1'] = np.where((par_draft.sy_temp.isna()), par_draft.parval1, par_draft.sy_temp)
-    par_f =  par_draft.dropna(axis=1)
-    return par_f
-
-
-
-def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day):
+# stf discharge
+def extract_day_stf(rch_file, channels, start_day, cali_start_day, cali_end_day):
     """extract a daily simulated streamflow from the output.rch file,
         store it in each channel file.
 
@@ -177,12 +169,13 @@ def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day)
                         rch_file,
                         delim_whitespace=True,
                         skiprows=9,
-                        usecols=[1, 3, 6],
-                        names=["date", "filter", "str_sim"],
+                        usecols=[0, 1, 8],
+                        names=["idx", "sub", "str_sim"],
                         index_col=0)
+        sim_stf = sim_stf.loc["REACH"]
 
-        sim_stf_f = sim_stf.loc[i]
-        sim_stf_f = sim_stf_f.drop(['filter'], axis=1)
+        sim_stf_f = sim_stf.loc[sim_stf["sub"] == int(i)]
+        sim_stf_f = sim_stf_f.drop(['sub'], axis=1)
         sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim))
         sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
         sim_stf_f.to_csv('cha_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
@@ -190,7 +183,7 @@ def extract_day_str(rch_file, channels, start_day, cali_start_day, cali_end_day)
     print('Finished ...')
 
 
-def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_day):
+def extract_month_stf(rch_file, channels, start_day, cali_start_day, cali_end_day):
     """extract a simulated streamflow from the output.rch file,
        store it in each channel file.
 
@@ -221,7 +214,7 @@ def extract_month_str(rch_file, channels, start_day, cali_start_day, cali_end_da
         print('stf_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
 
-
+# extract sed
 def extract_month_sed(rch_file, channels, start_day, cali_start_day, cali_end_day):
     """extract a simulated sediment from the output.rch file,
        store it in each channel file.
@@ -253,7 +246,7 @@ def extract_month_sed(rch_file, channels, start_day, cali_start_day, cali_end_da
         print('sed_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
 
-
+# extract baseflow
 def extract_month_baseflow(sub_file, channels, start_day, cali_start_day, cali_end_day):
     """ extract a simulated baseflow rates from the output.sub file,
         store it in each channel file.
@@ -366,6 +359,27 @@ def cvt_strobd_dtm():
     mstf_obd = stf_obd.resample('M').mean()
     mstf_obd.to_csv('streamflow_month.obd', float_format='%.2f', sep='\t', na_rep=-999)
 
+# extracct lai
+def extract_day_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
+    for i in subs:
+        lai_df = sao_df.loc[sao_df['SAID']==i, ['GIS', 'TIME', 'LAI-']]
+        lai_df = lai_df.groupby(['GIS', 'TIME']).sum()
+        lai_df.index = pd.date_range(start_day, periods=len(lai_df))
+        lai_df = lai_df[cali_start_day:cali_end_day]
+        lai_df.to_csv('lai_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+        print('lai_{:03d}.txt file has been created...'.format(i))
+    print('Finished ...')        
+
+def extract_mon_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
+    for i in subs:
+        lai_df = sao_df.loc[sao_df['SAID']==i, ['GIS', 'TIME', 'LAI-']]
+        lai_df = lai_df.groupby(['GIS', 'TIME']).sum()
+        lai_df.index = pd.date_range(start_day, periods=len(lai_df), freq='M')
+        lai_df = lai_df[cali_start_day:cali_end_day]
+        lai_df.to_csv('lai_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+        print('lai_{:03d}.txt file has been created...'.format(i))
+    print('Finished ...')        
+
 
 def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
     """extract a simulated streamflow from the output.rch file,
@@ -445,13 +459,10 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day, time_step=None):
 
     if time_step is None:
         time_step = 'day'
-
     if time_step == 'month':
         wt_obd_inf = 'dtw_mon.obd'
     else:
         wt_obd_inf = 'dtw_day.obd'
-
-
     mf_obd = pd.read_csv(
                         'MODFLOW/' + wt_obd_inf,
                         sep='\t',
@@ -492,6 +503,93 @@ def mf_obd_to_ins(wt_file, col_name, start_day, end_day, time_step=None):
     print('{}.ins file has been created...'.format(wt_file))
 
     # return result['{}_ins'.format(col_name)]
+
+
+def lai_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
+    """extract a simulated streamflow from the output.rch file,
+        store it in each channel file.
+
+    Args:
+        - rch_file (`str`): the path and name of the existing output file
+        - channels (`list`): channel number in a list, e.g. [9, 60]
+        - start_day ('str'): calibration start day, e.g. '1/1/1993'
+        - end_day ('str'): calibration end day e.g. '12/31/2000'
+        - time_step (`str`): day, month, year
+
+    Example:
+        pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
+    """ 
+    if time_step is None:
+        time_step = 'day'
+
+    if time_step == 'month':
+        stf_obd_inf = 'lai_mon.obd'
+    else:
+        stf_obd_inf = 'lai_day.obd'
+    stf_obd = pd.read_csv(
+                        stf_obd_inf,
+                        sep='\t',
+                        usecols=['date', col_name],
+                        index_col=0,
+                        parse_dates=True,
+                        na_values=[-999, '']
+                        )
+    
+    stf_obd = stf_obd[start_day:end_day]
+    stf_sim = pd.read_csv(
+                        srch_file,
+                        delim_whitespace=True,
+                        names=["date", "lai_sim"],
+                        index_col=0,
+                        parse_dates=True)
+    result = pd.concat([stf_obd, stf_sim], axis=1)
+    result['tdate'] = pd.to_datetime(result.index)
+    result['month'] = result['tdate'].dt.month
+    result['year'] = result['tdate'].dt.year
+    result['day'] = result['tdate'].dt.day
+
+    if time_step == 'day':
+        result['ins'] = (
+                        'l1 w !{}_'.format(col_name) + result["year"].map(str) +
+                        result["month"].map('{:02d}'.format) +
+                        result["day"].map('{:02d}'.format) + '!'
+                        )
+    elif time_step == 'month':
+        result['ins'] = 'l1 w !{}_'.format(col_name) + result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
+    else:
+        print('are you performing a yearly calibration?')
+    result['{}_ins'.format(col_name)] = np.where(result[col_name].isnull(), 'l1', result['ins'])
+
+    with open(srch_file+'.ins', "w", newline='') as f:
+        f.write("pif ~" + "\n")
+        result['{}_ins'.format(col_name)].to_csv(f, sep='\t', encoding='utf-8', index=False, header=False)
+    print('{}.ins file has been created...'.format(srch_file))
+    return result['{}_ins'.format(col_name)]
+
+
+def fdc_obd_to_ins(fdc_sims, fdc_obds):
+    for fdc_sim_inf, fdc_obd_inf in zip(fdc_sims, fdc_obds):
+        fdc_obd = pd.read_csv(
+                            fdc_obd_inf,
+                            sep='\t',
+                            names=["interval", "obd_slp"],
+                            index_col=0,
+                            na_values=[-999, '']
+                            )
+        fdc_sim = pd.read_csv(
+                            fdc_sim_inf,
+                            delim_whitespace=True,
+                            names=["interval", "sim_slp"],
+                            index_col=0
+                            )
+        result = pd.concat([fdc_obd, fdc_sim], axis=1)
+        result['ins'] = (
+                        'l1 w !{}_slp_'.format(fdc_sim_inf[:-4])+result.index.map('{:03d}'.format)+'!'
+                        )
+        with open(fdc_sim_inf+'.ins', "w", newline='') as f:
+            f.write("pif ~" + "\n")
+            result['ins'].to_csv(f, sep='\t', encoding='utf-8', index=False, header=False)
+        print('{}.ins file has been created...'.format(fdc_sim_inf))
 
 
 def extract_month_avg(cha_file, channels, start_day, cal_day=None, end_day=None):
@@ -538,7 +636,7 @@ def extract_month_avg(cha_file, channels, start_day, cal_day=None, end_day=None)
 
 
 def model_in_to_template_file(model_in_file, tpl_file=None):
-    """write a template file for a SWAT parameter value file (model.in).
+    """write a template file for a APEX parameter value file (model.in).
 
     Args:
         model_in_file (`str`): the path and name of the existing model.in file
@@ -577,43 +675,118 @@ def model_in_to_template_file(model_in_file, tpl_file=None):
     return mod_df
 
 
-
-def riv_par_to_template_file(riv_par_file, tpl_file=None):
-    """write a template file for a SWAT parameter value file (model.in).
+def tobd_fdcobd(df, colnam, min_fdc, max_fdc, interval_num, plot_show=None):
+    """convert time series of streamflow obd to fdc slope obd
 
     Args:
-        model_in_file (`str`): the path and name of the existing model.in file
-        tpl_file (`str`, optional):  template file to write. If None, use
-            `model_in_file` +".tpl". Default is None
-    Note:
-        Uses names in the first column in the pval file as par names.
-
-    Example:
-        pest_utils.model_in_to_template_file('path')
+        df (`dataframe`): time series of streamflow observation data
+        colnam (`str`): streamflow obd column name
+        min_fdc (`int`): minimum value of exceedance range
+        max_fdc (`int`): maximum value of exceedance range
+        interval_num (`int`): number of intervals for observed points to be used for calibration
+        plot_show (`boolean`, optional): show flow duration curve with slopes. Defaults to None.
 
     Returns:
-        **pandas.DataFrame**: a dataFrame with template file information
+        `dataframe`: slopes from fdc stored in *.obd file
+    """
+    sort = np.sort(df.loc[:, colnam])[::-1]
+    exceedence = np.arange(1.,len(sort)+1) / len(sort)
+    exc_x = exceedence*100
+
+    df = pd.DataFrame({'exceed': exc_x, 'flow': sort})
+    # argument: how many intervals you want to get for slope?
+    df = df.loc[(df['exceed']>=min_fdc) & (df['exceed']<max_fdc)]
+    intervals = np.linspace(min_fdc, max_fdc, num=interval_num+1)
+    slopes = []
+    if plot_show is not None:
+        fig, ax = plt.subplots(figsize=(7, 5))
+        ax.plot(df['exceed'], df['flow'])
+        for i in range (len(intervals)-1):
+            min_set = intervals[i]
+            max_set = intervals[i+1]
+            df2 = df.loc[(df['exceed']>=min_set) & (df['exceed']<max_set)]
+            m, b = np.polyfit(df2['exceed'], df2['flow'], 1)
+            ax.text(df2['exceed'].mean(), df2['flow'].mean(), '{0:.4f}'.format(m), fontsize=8)
+            ax.plot(df2['exceed'], m*df2['exceed'] + b, color='red', alpha=0.5)
+            slopes.append(m)
+        plt.show()
+    if plot_show is None:
+        for i in range (len(intervals)-1):
+            min_set = intervals[i]
+            max_set = intervals[i+1]
+            df2 = df.loc[(df['exceed']>=min_set) & (df['exceed']<max_set)]
+            m, b = np.polyfit(df2['exceed'], df2['flow'], 1)
+            slopes.append(m)
+    slopes_df_ = pd.DataFrame({colnam:slopes})
+    slopes_df_.to_csv('fdc_{}.obd'.format(colnam), sep='\t', na_rep=-999, header=False, float_format='%.7e')
+    return slopes_df_
+
+
+def extract_slopesFrTimeSim(
+            rch_file, channels, start_day, cali_start_day, cali_end_day, 
+            min_fdc, max_fdc, interval_num, time_step=None, plot_show=None):
+    """convert time series of streamflow obd to fdc slope obd
+
+    Args:
+        df (`dataframe`): time series of streamflow observation data
+        colnam (`str`): streamflow obd column name
+        min_fdc (`int`): minimum value of exceedance range
+        max_fdc (`int`): maximum value of exceedance range
+        interval_num (`int`): number of intervals for observed points to be used for calibration
+        plot_show (`boolean`, optional): show flow duration curve with slopes. Defaults to None.
+
+    Returns:
+        `dataframe`: slopes from fdc stored in *.obd file
     """
 
-    if tpl_file is None:
-        tpl_file = riv_par_file + ".tpl"
-    mf_par_df = pd.read_csv(
-                        riv_par_file,
+    for cha in channels:
+        sim_stf = pd.read_csv(
+                        rch_file,
                         delim_whitespace=True,
-                        header=None, skiprows=2,
-                        names=["parnme", "chg_type", "parval1"])
-    mf_par_df.index = mf_par_df.parnme
-    mf_par_df.loc[:, "tpl"] = mf_par_df.parnme.apply(lambda x: " ~   {0:15s}   ~".format(x))
-    with open(tpl_file, 'w') as f:
-        f.write("ptf ~\n# modflow_par template file.\n")
-        f.write("NAME   CHG_TYPE    VAL\n")
-        f.write(mf_par_df.loc[:, ["parnme", "chg_type", "tpl"]].to_string(
-                                                        col_space=0,
-                                                        formatters=[SFMT, SFMT, SFMT],
-                                                        index=False,
-                                                        header=False,
-                                                        justify="left"))
-    return mf_par_df
+                        skiprows=9,
+                        usecols=[0, 1, 8],
+                        names=["idx", "sub", "str_sim"],
+                        index_col=0)
+        sim_stf = sim_stf.loc["REACH"]
+        sim_stf_f = sim_stf.loc[sim_stf["sub"] == int(cha)]
+        sim_stf_f = sim_stf_f.drop(['sub'], axis=1)
+        if time_step is None:
+            sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim))
+        if time_step == 'M':
+            sim_stf_f.index = pd.date_range(start_day, periods=len(sim_stf_f.str_sim), freq='M')
+        sim_stf_f = sim_stf_f[cali_start_day:cali_end_day]
+        sort = np.sort(sim_stf_f.iloc[:, 0])[::-1]
+        exceedence = np.arange(1.,len(sort)+1) / len(sort)
+        exc_x = exceedence*100
+
+        fdc_df = pd.DataFrame({'exceed': exc_x, 'flow': sort})
+        # argument: how many intervals you want to get for slope?
+        fdc_df = fdc_df.loc[(fdc_df['exceed']>=min_fdc) & (fdc_df['exceed']<max_fdc)]
+        intervals = np.linspace(min_fdc, max_fdc, num=interval_num+1)
+        slopes = []
+        if plot_show is not None:
+            fig, ax = plt.subplots(figsize=(7, 5))
+            ax.plot(fdc_df['exceed'], fdc_df['flow'])
+            for i in range (len(intervals)-1):
+                min_set = intervals[i]
+                max_set = intervals[i+1]
+                df2 = fdc_df.loc[(fdc_df['exceed']>=min_set) & (fdc_df['exceed']<max_set)]
+                m, b = np.polyfit(df2['exceed'], df2['flow'], 1)
+                ax.text(df2['exceed'].mean(), df2['flow'].mean(), '{0:.4f}'.format(m), fontsize=8)
+                ax.plot(df2['exceed'], m*df2['exceed'] + b, color='red', alpha=0.5)
+                slopes.append(m)
+            plt.show()
+        if plot_show is None:
+            for i in range (len(intervals)-1):
+                min_set = intervals[i]
+                max_set = intervals[i+1]
+                df2 = fdc_df.loc[(fdc_df['exceed']>=min_set) & (fdc_df['exceed']<max_set)]
+                m, b = np.polyfit(df2['exceed'], df2['flow'], 1)
+                slopes.append(m)
+        slopes_df_ = pd.DataFrame({'cha_{:03d}'.format(cha):slopes})
+        slopes_df_.to_csv('fdc_{:03d}.txt'.format(cha), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+        print('fdc_{:03d}.txt file has been created...'.format(cha))
+    print('Finished ...')
 
 
 def _remove_readonly(func, path, excinfo):

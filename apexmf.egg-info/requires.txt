@@ -7,3 +7,4 @@ matplotlib
 hydroeval
 tqdm
 termcolor
+pyshp

@@ -10,21 +10,21 @@ import os
 from hydroeval import evaluator, nse, rmse, pbias
 import numpy as np
 
-def str_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
+def stf_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
     
     if time_step is None:
         time_step = "D"
-        strobd_file = "stf_day.obd"
+        stfobd_file = "stf_day.obd"
     else:
         time_step = "M"
-        strobd_file = "stf_mon.obd"
+        stfobd_file = "stf_mon.obd"
     output_rch = pd.read_csv(
                         rch_file, delim_whitespace=True, skiprows=9,
                         usecols=[0, 1, 8], names=["idx", "sub", "simulated"], index_col=0
                         )
     df = output_rch.loc["REACH"]
-    str_obd = pd.read_csv(
-                        strobd_file, 
+    stf_obd = pd.read_csv(
+                        stfobd_file, 
                         sep='\t', 
                         index_col=0, 
                         header=0,
@@ -50,16 +50,17 @@ def str_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
     df = df.loc[df['sub'] == int(rch_num)]
     df = df.drop('sub', axis=1)
     df.index = pd.date_range(start_date, periods=len(df), freq=time_step)
-    df = pd.concat([df, str_obd[obd_nam], prep_df], axis=1)
+    df = pd.concat([df, stf_obd[obd_nam], prep_df], axis=1)
     plot_df = df[df['simulated'].notna()]
     return plot_df
 
 
-def str_plot(plot_df):
+def stf_plot(plot_df):
 
     colnams = plot_df.columns.tolist()
+
     # plot
-    fig, ax = plt.subplots(figsize=(12, 4))
+    fig, ax = plt.subplots(figsize=(16, 4))
     ax.grid(True)
     ax.plot(plot_df.index, plot_df.iloc[:, 0], label='Simulated', color='green', marker='^', alpha=0.7)
     ax.scatter(
@@ -77,7 +78,7 @@ def str_plot(plot_df):
         width=20,
         color="blue", align='center', alpha=0.5, zorder=0)
     ax2.set_ylabel("Precipitation $(mm)$",color="blue",fontsize=14)
-    ax.set_ylabel("Stream Discharge $(m^3/day)$",fontsize=14)
+    ax.set_ylabel("Stream Discharge $(m^3/s)$",fontsize=14)
     ax2.invert_yaxis()
     ax2.set_ylim(plot_df.prep.max()*3, 0)
     ax.margins(y=0.2)
@@ -85,7 +86,6 @@ def str_plot(plot_df):
     ax2.tick_params(axis='y', labelsize=12)    
     # add stats
     org_stat = plot_df.dropna()
-
     sim_org = org_stat.iloc[:, 0].to_numpy()
     obd_org = org_stat.iloc[:, 1].to_numpy()
     df_nse = evaluator(nse, sim_org, obd_org)
@@ -98,7 +98,7 @@ def str_plot(plot_df):
     ax.text(
         0.95, 0.05,
         'NSE: {:.2f} | RMSE: {:.2f} | PBIAS: {:.2f} | R-Squared: {:.2f}'.format(df_nse[0], df_rmse[0], df_pibas[0], r_squared),
-        horizontalalignment='right',fontsize=10,
+        horizontalalignment='right',fontsize=12,
         bbox=dict(facecolor='green', alpha=0.5),
         transform=ax.transAxes
         )     
@@ -109,6 +109,7 @@ def str_plot(plot_df):
         # bbox_to_anchor=(0, 0.202),
         fontsize=12)
     # plt.legend()
+    plt.savefig('{}.png'.format(colnams[1]), dpi=600, bbox_inches="tight")
     plt.show()
     return df_nse[0]
 
@@ -128,7 +129,7 @@ def get_stats(df):
     return df_nse, df_rmse, df_pibas, r_squared
 
 
-def str_plot_test(plot_df, cal_period=None, val_period=None):
+def stf_plot_test(plot_df, cal_period=None, val_period=None):
 
     if cal_period:
         cal_df = plot_df[cal_period[0]:cal_period[1]]
@@ -197,9 +198,9 @@ def str_plot_test(plot_df, cal_period=None, val_period=None):
 
 
 
-def obds_df(strobd_file, wt_obd_file):
-    str_obd = pd.read_csv(
-                        strobd_file, sep=r'\s+', index_col=0, header=0,
+def obds_df(stfobd_file, wt_obd_file):
+    stf_obd = pd.read_csv(
+                        stfobd_file, sep=r'\s+', index_col=0, header=0,
                         parse_dates=True, delimiter="\t",
                         na_values=[-999, ""]
                         )
@@ -208,12 +209,12 @@ def obds_df(strobd_file, wt_obd_file):
                         parse_dates=True, delimiter="\t",
                         na_values=[-999, ""]
                         )
-    if strobd_file == 'streamflow_month.obd':
-        str_obd = str_obd.resample('M').mean()
+    if stfobd_file == 'streamflow_month.obd':
+        stf_obd = stf_obd.resample('M').mean()
     if wt_obd_file == 'modflow_month.obd':
         wt_obd = wt_obd.resample('M').mean()
 
-    df = pd.concat([str_obd, wt_obd], axis=1)
+    df = pd.concat([stf_obd, wt_obd], axis=1)
     return df
     
 

@@ -138,9 +138,9 @@ def init_setup(wd):
         if not os.path.isfile(os.path.join(wd, j)):
             shutil.copy2(os.path.join(opt_files_path, j), os.path.join(wd, j))
             print(" '{}' file copied ...".format(j) + colored(suffix, 'green'))
-    if not os.path.isfile(os.path.join(wd, 'forward_run.py')):
-        shutil.copy2(os.path.join(foward_path, 'forward_run.py'), os.path.join(wd, 'forward_run.py'))
-        print(" '{}' file copied ...".format('forward_run.py') + colored(suffix, 'green'))        
+    # if not os.path.isfile(os.path.join(wd, 'forward_run.py')):
+    shutil.copy2(os.path.join(foward_path, 'forward_run.py'), os.path.join(wd, 'forward_run.py'))
+    print(" '{}' file copied ...".format('forward_run.py') + colored(suffix, 'green'))        
 
 
 def fix_riv_pkg(wd, riv_file):

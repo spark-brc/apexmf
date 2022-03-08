@@ -102,7 +102,7 @@ if __name__ == '__main__':
         modify_riv_pars()
     if apexmf_con.loc['pp_included', 'vals'] != 'n':
         pp_included = apexmf_con.loc['pp_included','vals'].strip('][').split(', ')
-        pp_included = [int(i) for i in pp_included]   
+        pp_included = [i.replace("'", "").strip() for i in pp_included]  
         modify_hk_sy_pars_pp(pp_included)
     # execute model
     execute_apexmf()

@@ -28,7 +28,9 @@ def create_apexmf_con(
                 gw_level=None, grids=None,
                 lai_file=None, lai_subs=None,
                 riv_parm=None,  baseflow=None,
-                time_step=None
+                fdc=None, min_fdc=None, max_fdc=None, interval_num=None,
+                time_step=None,
+                pp_included=None
                 ):
     """create apexmf.con file containg APEX-MODFLOW model PEST initial settings
 
@@ -69,13 +71,26 @@ def create_apexmf_con(
         baseflow = 'n'
     else:
         baseflow = 'y'
+    if fdc is None:
+        fdc = 'n'
+    if  min_fdc is None:
+        min_fdc = 10 
+    if  max_fdc is None:
+        max_fdc = 90
+    if  interval_num is None:
+        interval_num = 20
+    if pp_included is None:
+        pp_included = 'n'
+
     col01 = [
         'wd', 'sim_start', 'cal_start', 'cal_end',
         'cha_file', 'subs', 
-        'gw_level', 'grid_ids',
+        'gw_level', 'grids',
         'lai_file', 'lai_subs',
         'riv_parm', 'baseflow',
+        'fdc', 'min_fdc', 'max_fdc', 'interval_num',
         'time_step',
+        'pp_included'
         ]
     col02 = [
         wd, sim_start, cal_start, cal_end, 
@@ -83,7 +98,9 @@ def create_apexmf_con(
         gw_level, grids,
         lai_file, lai_subs, 
         riv_parm, baseflow,
-        time_step
+        fdc, min_fdc, max_fdc, interval_num,
+        time_step,
+        pp_included
         ]
     df = pd.DataFrame({'names': col01, 'vals': col02})
     with open(os.path.join(wd, 'apexmf.con'), 'w', newline='') as f:
@@ -213,6 +230,7 @@ def extract_month_stf(rch_file, channels, start_day, cali_start_day, cali_end_da
         sim_stf_f.to_csv('stf_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('stf_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
+
 
 # extract sed
 def extract_month_sed(rch_file, channels, start_day, cali_start_day, cali_end_day):
@@ -361,6 +379,7 @@ def cvt_strobd_dtm():
 
 # extracct lai
 def extract_day_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
+    lai_sim_files_ = []
     for i in subs:
         lai_df = sao_df.loc[sao_df['SAID']==i, ['GIS', 'TIME', 'LAI-']]
         lai_df = lai_df.groupby(['GIS', 'TIME']).sum()
@@ -368,9 +387,13 @@ def extract_day_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
         lai_df = lai_df[cali_start_day:cali_end_day]
         lai_df.to_csv('lai_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('lai_{:03d}.txt file has been created...'.format(i))
-    print('Finished ...')        
+        lai_sim_files_.append('lai_{:03d}.txt'.format(i))
+    print('Finished ...')
+    return lai_sim_files_
+
 
 def extract_mon_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
+    lai_sim_files_ = []
     for i in subs:
         lai_df = sao_df.loc[sao_df['SAID']==i, ['GIS', 'TIME', 'LAI-']]
         lai_df = lai_df.groupby(['GIS', 'TIME']).sum()
@@ -378,7 +401,9 @@ def extract_mon_lai(sao_df, subs, start_day, cali_start_day, cali_end_day):
         lai_df = lai_df[cali_start_day:cali_end_day]
         lai_df.to_csv('lai_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('lai_{:03d}.txt file has been created...'.format(i))
+        lai_sim_files_.append('lai_{:03d}.txt'.format(i))
     print('Finished ...')        
+    return lai_sim_files_
 
 
 def stf_obd_to_ins(srch_file, col_name, start_day, end_day, time_step=None):
@@ -736,9 +761,9 @@ def extract_slopesFrTimeSim(
         plot_show (`boolean`, optional): show flow duration curve with slopes. Defaults to None.
 
     Returns:
-        `dataframe`: slopes from fdc stored in *.obd file
+        `dataframe`: simulated slopes from fdc stored in *.txt file
     """
-
+    fdc_sim_files_ =[]
     for cha in channels:
         sim_stf = pd.read_csv(
                         rch_file,
@@ -786,7 +811,9 @@ def extract_slopesFrTimeSim(
         slopes_df_ = pd.DataFrame({'cha_{:03d}'.format(cha):slopes})
         slopes_df_.to_csv('fdc_{:03d}.txt'.format(cha), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('fdc_{:03d}.txt file has been created...'.format(cha))
+        fdc_sim_files_.append('fdc_{:03d}.txt'.format(cha))
     print('Finished ...')
+    return fdc_sim_files_
 
 
 def _remove_readonly(func, path, excinfo):

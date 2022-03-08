@@ -317,14 +317,13 @@ def parm_to_tpl_file(parm_infile=None, parm_db=None, tpl_file=None):
         parm_df.iloc[i, 2] = int(parm_df.iloc[i, 1][1:]) 
     parm_df = parm_df.sort_values(by=['idx'])    
 
-
     parm_sel = parm_df[parm_df['flag'] == 'y'].index.tolist()
     with open(parm_infile, 'r') as f:
         content = f.readlines()
-    content = [x.strip() for x in content] 
-    upper_pars = content[:35]
-    core_pars = content[35:46]
-    lower_pars = content[46:]
+    upper_pars = [x.rstrip() for x in content[:35]] 
+    core_pars = [x.strip() for x in content[35:46]]
+    lower_pars = [x.rstrip() for x in content[46:]]
+
     # core_lst = [i for c in core_pars for i in c.split()]
     core_lst = []
     for i in core_pars:
@@ -334,26 +333,25 @@ def parm_to_tpl_file(parm_infile=None, parm_db=None, tpl_file=None):
     parm_df['value'] = core_lst
     parm_df['tpl'] = np.where(
         parm_df['flag'] == 'n',
-        parm_df['value'].apply(lambda x:"{0:6s}".format(x)),
-        parm_df.nam.apply(lambda x:"~{0:4s}~".format(x))
+        parm_df['value'].apply(lambda x:"{0:>7s}".format(x)),
+        parm_df.nam.apply(lambda x:"~{0:5s}~".format(x))
         )
     parm_lst = parm_df.tpl.tolist()
     parm_arr = np.reshape(parm_lst, (11, 10))
     parm_arr_df = pd.DataFrame(parm_arr)
+    parm_arr_df.iloc[:, 0] = parm_arr_df.iloc[:, 0].apply(lambda x:"{0:>8s}".format(x))
     tpl_file = parm_infile + ".tpl"
 
-    TEMP_LONG = lambda x: "{0:<6s} ".format(str(x))
-    fmt = [TEMP_LONG]*10
     with open(tpl_file, 'w') as f:
         f.write("ptf ~\n")
         for row in upper_pars:
             f.write(row + '\n')
         f.write(parm_arr_df.to_string(
-                                    # col_space=0,
+                                    col_space=0,
                                     # formatters=fmt,
                                     index=False,
                                     header=False,
-                                    # justify="right"
+                                    justify="right"
                                     ))
         f.write('\n')
         for row in lower_pars:

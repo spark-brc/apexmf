@@ -12,7 +12,7 @@ with open("README.rst", "r") as fd:
     long_desc = fd.read()
 
 
-VERSION = '0.0.6'
+VERSION = '0.0.9'
 DESCRIPTION = 'apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.'
 # LONG_DESCRIPTION = 'A package that allows to work with apex-MODFLOW model'
 
@@ -38,7 +38,7 @@ setup(
     },
     packages=find_packages(),
     install_requires=[
-        'pandas', 'numpy', 'pyemu', 'flopy', 'scipy', 'matplotlib',
+        'pandas', 'numpy', 'pyemu', 'flopy', 'scipy', 'matplotlib', 'openpyxl'
         'hydroeval', 'tqdm', 'termcolor', 'pyshp'],
     keywords=['python', 'APEX-MODFLOW', 'PEST'],
     classifiers=[

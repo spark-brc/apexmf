@@ -4,7 +4,7 @@ pyemu
 flopy
 scipy
 matplotlib
-hydroeval
+openpyxlhydroeval
 tqdm
 termcolor
 pyshp

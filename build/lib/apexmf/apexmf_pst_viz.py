@@ -1,7 +1,7 @@
 """ PEST support visualizations: 10/22/2020 created by Seonggyu Park
     last modified day: 10/22/2020 by Seonggyu Park
 """
-
+# TODO: replace hydroeval dependency with ...
 from http.client import METHOD_NOT_ALLOWED
 import pandas as pd
 import numpy as np
@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import os
 from hydroeval import evaluator, nse, rmse, pbias
 import numpy as np
+from .utils import ObjFns
+
 
 def stf_df(rch_file, start_date, rch_num, obd_nam, time_step=None):
     

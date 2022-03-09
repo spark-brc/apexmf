@@ -7,6 +7,7 @@ from .apexmf_utils import *
 from .apexmf_pst_viz import *
 from .apexmf_pst_utils import *
 from .apexmf_pst_par import *
+from .utils import *
 from .version import __version__
 # from .apexmf_pst_stats import *
 

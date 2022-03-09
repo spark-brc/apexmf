@@ -815,6 +815,16 @@ def extract_slopesFrTimeSim(
     print('Finished ...')
     return fdc_sim_files_
 
+def modify_mf_tpl_path(pst_model_input):
+    for i in range(len(pst_model_input)):
+        if (
+            pst_model_input.iloc[i, 0][:2] == 'hk' or 
+            pst_model_input.iloc[i, 0][:2] == 'sy' or
+            pst_model_input.iloc[i, 0][:2] == 'mf'
+            ):
+            pst_model_input.iloc[i, 0] =  "MODFLOW" +'\\'+ pst_model_input.iloc[i, 0]
+    return pst_model_input
+
 
 def _remove_readonly(func, path, excinfo):
     """remove readonly dirs, apparently only a windows issue
@@ -855,7 +865,6 @@ def execute_beopest(
         num_workers = mp.cpu_count()
     else:
         num_workers = int(num_workers)
-
     if local:
         hostname = "localhost"
     else:

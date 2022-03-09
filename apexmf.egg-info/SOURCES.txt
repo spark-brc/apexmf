@@ -13,6 +13,7 @@ apexmf/forward_run.py
 apexmf/forward_run_gns.py
 apexmf/forward_run_tmp.py
 apexmf/swat_par_chg_run.py
+apexmf/utils.py
 apexmf/version.py
 apexmf.egg-info/PKG-INFO
 apexmf.egg-info/SOURCES.txt

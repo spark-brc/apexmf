@@ -107,7 +107,8 @@ if __name__ == '__main__':
     # execute model
     execute_apexmf()
     # extract sims
-    if apexmf_con.loc['cha_file', 'vals'] != 'n' and apexmf_con.loc['fdc', 'vals'] != 'n':
+    # if apexmf_con.loc['cha_file', 'vals'] != 'n' and apexmf_con.loc['fdc', 'vals'] != 'n':
+    if apexmf_con.loc['cha_file', 'vals'] != 'n':
         subs = apexmf_con.loc['subs','vals'].strip('][').split(', ')
         subs = [int(i) for i in subs]
         extract_stf_results(cha_file, subs, sim_start, cal_start, cal_end)

@@ -1,5 +1,6 @@
 {
     "python.pythonPath": "C:\\Users\\seonggyu.park\\Miniconda3\\envs\\sm_pest\\python.exe",
     "restructuredtext.confPath": "",
-    "esbonio.server.enabled": true
+    "esbonio.server.enabled": true,
+    "esbonio.sphinx.confDir": ""
 }

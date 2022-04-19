@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-from time import time
 import pandas as pd
 from apexmf import apexmf_pst_par, apexmf_utils
 from apexmf import apexmf_pst_utils
@@ -8,7 +7,6 @@ import pyemu
 
 wd = os.getcwd()
 os.chdir(wd)
-print(wd)
 
 def time_stamp(des):
     time = datetime.now().strftime('[%m/%d/%y %H:%M:%S]')
@@ -82,11 +80,12 @@ def extract_slopes(cha_file, subs, sim_start, cal_start, cal_end,
     # extract_watertable_sim([5699, 5832], '1/1/1980', '12/31/2005')
 
 if __name__ == '__main__':
-    cwd = os.getcwd()
-    os.chdir(cwd)
+    
+    os.chdir(wd)
+    print(wd)
     apexmf_con = pd.read_csv('apexmf.con', sep='\t', names=['names', 'vals'], index_col=0, comment="#")
     # get default vals
-    wd = apexmf_con.loc['wd', 'vals']
+    # wd = apexmf_con.loc['wd', 'vals']
     sim_start = apexmf_con.loc['sim_start', 'vals']
     cal_start = apexmf_con.loc['cal_start', 'vals']
     cal_end = apexmf_con.loc['cal_end', 'vals']
@@ -125,3 +124,4 @@ if __name__ == '__main__':
     if apexmf_con.loc['fdc', 'vals'] == 'y':
         extract_slopes(cha_file, subs, sim_start, cal_start, cal_end, 
             min_fdc, max_fdc, interval_num, time_step=None)
+

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: apexmf
-Version: 0.1.3
+Version: 0.1.4
 Summary: apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.
 Download-URL: https://pypi.org/project/apexmf
 Author: Seonggyu Park

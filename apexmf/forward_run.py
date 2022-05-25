@@ -59,7 +59,7 @@ def extract_lai_results(lai_file, lai_subs, sim_start, cal_start, cal_end):
         sao_df = apexmf_utils.read_sao(lai_file)
         apexmf_pst_utils.extract_day_lai(sao_df, lai_subs, sim_start, cal_start, cal_end)
     elif time_step == 'month':
-        des = "simulation successfully completed | extracting monthl simulated lai"
+        des = "simulation successfully completed | extracting monthly simulated lai"
         time_stamp(des)
         sao_df = apexmf_utils.read_sao(lai_file)
         apexmf_pst_utils.extract_day_mon(sao_df, lai_subs, sim_start, cal_start, cal_end)
@@ -75,6 +75,12 @@ def extract_slopes(cha_file, subs, sim_start, cal_start, cal_end,
     time_stamp(des)
     apexmf_pst_utils.extract_slopesFrTimeSim(cha_file, subs, sim_start, cal_start, cal_end, 
             min_fdc, max_fdc, interval_num, time_step=None)
+
+def extract_salt_results(salt_subs, sim_start, cal_start, cal_end):
+    des = "simulation successfully completed | extracting simulated salt loads and concentrations"
+    time_stamp(des)
+    apexmf_pst_utils.extract_salt_results(salt_subs, sim_start, cal_start, cal_end)
+
 
 
     # extract_watertable_sim([5699, 5832], '1/1/1980', '12/31/2005')

@@ -2,6 +2,7 @@
     last modified day: 10/14/2020 by Seonggyu Park
 """
 
+from unittest.mock import NonCallableMagicMock
 import pandas as pd
 import numpy as np
 import time
@@ -27,6 +28,7 @@ def create_apexmf_con(
                 cha_file=None, subs=None,
                 gw_level=None, grids=None,
                 lai_file=None, lai_subs=None,
+                salt_subs=None,
                 riv_parm=None,  baseflow=None,
                 fdc=None, min_fdc=None, max_fdc=None, interval_num=None,
                 time_step=None,
@@ -61,6 +63,9 @@ def create_apexmf_con(
     if lai_file is None:
         lai_file = 'n'
         lai_subs = 'n'
+    if salt_subs is None:
+        salt_subs = 'n'
+
     if time_step is None:
         time_step = 'day'
     if riv_parm is None:
@@ -87,20 +92,22 @@ def create_apexmf_con(
         'cha_file', 'subs', 
         'gw_level', 'grids',
         'lai_file', 'lai_subs',
+        'salt_subs',
         'riv_parm', 'baseflow',
         'fdc', 'min_fdc', 'max_fdc', 'interval_num',
         'time_step',
-        'pp_included'
+        'pp_included',
         ]
     col02 = [
         wd, wd+'\MODFLOW', sim_start, cal_start, cal_end, 
         cha_file, subs,
         gw_level, grids,
-        lai_file, lai_subs, 
+        lai_file, lai_subs,
+        salt_subs, 
         riv_parm, baseflow,
         fdc, min_fdc, max_fdc, interval_num,
         time_step,
-        pp_included
+        pp_included,
         ]
     df = pd.DataFrame({'names': col01, 'vals': col02})
     with open(os.path.join(wd, 'apexmf.con'), 'w', newline='') as f:
@@ -617,6 +624,67 @@ def fdc_obd_to_ins(fdc_sims, fdc_obds):
         print('{}.ins file has been created...'.format(fdc_sim_inf))
 
 
+def salt_obd_to_ins(salt_sim_file, obd_file, col_name, start_day, end_day, time_step=None):
+    """extract a simulated streamflow from the output.rch file,
+        store it in each channel file.
+
+    Args:
+        - rch_file (`str`): the path and name of the existing output file
+        - channels (`list`): channel number in a list, e.g. [9, 60]
+        - start_day ('str'): calibration start day, e.g. '1/1/1993'
+        - end_day ('str'): calibration end day e.g. '12/31/2000'
+        - time_step (`str`): day, month, year
+
+    Example:
+        pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
+    """ 
+    if time_step is None:
+        time_step = 'day'
+    if time_step == 'month' or time_step == 'mon' or time_step == 'm':
+        time_step = 'mon'
+
+    salt_obd = pd.read_csv(
+                        obd_file,
+                        sep='\t',
+                        usecols=['date', col_name],
+                        index_col=0,
+                        parse_dates=True,
+                        na_values=[-999, '']
+                        )
+    # Remove pandas rows with duplicate indices
+    salt_obd = salt_obd[~salt_obd.index.duplicated(keep='first')]
+    salt_obd = salt_obd[start_day:end_day]
+    salt_sim = pd.read_csv(
+                        salt_sim_file,
+                        delim_whitespace=True,
+                        names=["date", "salt_sim"],
+                        index_col=0,
+                        parse_dates=True)
+    result = pd.concat([salt_obd, salt_sim], axis=1)
+    result['tdate'] = pd.to_datetime(result.index)
+    result['month'] = result['tdate'].dt.month
+    result['year'] = result['tdate'].dt.year
+    result['day'] = result['tdate'].dt.day
+
+    if time_step == 'day':
+        result['ins'] = (
+                        'l1 w !{}_'.format(col_name) + result["year"].map(str) +
+                        result["month"].map('{:02d}'.format) +
+                        result["day"].map('{:02d}'.format) + '!'
+                        )
+    elif time_step == 'mon':
+        result['ins'] = 'l1 w !{}_'.format(col_name) + result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
+    else:
+        print('are you performing a yearly calibration?')
+    result['{}_ins'.format(col_name)] = np.where(result[col_name].isnull(), 'l1', result['ins'])
+
+    with open(salt_sim_file+'.ins', "w", newline='') as f:
+        f.write("pif ~" + "\n")
+        result['{}_ins'.format(col_name)].to_csv(f, sep='\t', encoding='utf-8', index=False, header=False)
+    print('{}.ins file has been created...'.format(salt_sim_file))
+    return result['{}_ins'.format(col_name)]
+
+
 def extract_month_avg(cha_file, channels, start_day, cal_day=None, end_day=None):
     """extract a simulated streamflow from the channel_day.txt file,
         store it in each channel file.
@@ -814,6 +882,47 @@ def extract_slopesFrTimeSim(
         fdc_sim_files_.append('fdc_{:03d}.txt'.format(cha))
     print('Finished ...')
     return fdc_sim_files_
+
+def extract_salt_results(salt_subs, sim_start, cal_start, cal_end):
+    """extract a simulated streamflow from the output.rch file,
+       store it in each channel file.
+
+    Args:
+        - rch_file (`str`): the path and name of the existing output file
+        - channels (`list`): channel number in a list, e.g. [9, 60]
+        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1985'
+        - end_day ('str'): simulation end day e.g. '12/31/2005'
+
+    Example:
+        apexmf_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+    """
+    if not os.path.exists('SALINITY/salt.output.channels'):
+        raise Exception("'salt.output.channels' file not found")
+
+    salt_df = pd.read_csv(
+                        "SALINITY/salt.output.channels",
+                        delim_whitespace=True,
+                        skiprows=4,
+                        header=0,
+                        index_col=0,
+                        )
+    salt_df = salt_df.iloc[:, 5:] # only cols we need
+    for i in salt_subs:
+        salt_dff = salt_df.loc[i]
+        salt_dff.index = pd.date_range(sim_start, periods=len(salt_dff))
+        salt_dff = salt_dff[cal_start:cal_end]
+        colnams = salt_dff.columns
+        # print out daily
+        for cn in colnams:
+            sdf = salt_dff.loc[:, cn]
+            sdf.to_csv('salt_{}_{:03d}_day.txt'.format(cn, i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+            print('salt_{}_{:03d}_day.txt'.format(cn, i))
+            msdf = sdf.resample('M').mean()
+            msdf.to_csv('salt_{}_{:03d}_mon.txt'.format(cn, i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+            print('salt_{}_{:03d}_mon.txt'.format(cn, i))
+    print('Finished ...')    
+
+
 
 def modify_mf_tpl_path(pst_model_input):
     for i in range(len(pst_model_input)):

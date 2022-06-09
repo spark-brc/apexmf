@@ -383,7 +383,7 @@ def export_pardb_pest(par):
 def update_hk_pars(par):
     hk_df = pd.read_csv(
                         'MODFLOW/hk0pp.dat',
-                        sep='\s+',
+                        sep=r'\s+',
                         usecols=[4],
                         names=['hk_temp']
                         )
@@ -407,12 +407,12 @@ def update_sy_pars(par):
     return par_f
 
 def riv_par_to_template_file(riv_par_file, tpl_file=None):
-    """write a template file for a SWAT parameter value file (model.in).
+    """write a template file for a river parameter value file (mf_riv.par).
 
     Args:
-        model_in_file (`str`): the path and name of the existing model.in file
+        riv_par_file(`str`): the path and name of the existing model.in file
         tpl_file (`str`, optional):  template file to write. If None, use
-            `model_in_file` +".tpl". Default is None
+            `riv_par_file` +".tpl". Default is None
     Note:
         Uses names in the first column in the pval file as par names.
 
@@ -513,14 +513,13 @@ def crop_pars_tpl():
     print(crop_pars)
 
 
-def rt3d_initc_par(wd, chg_type=None, val=None):
+def rt3d_initc_par(chg_type=None, val=None):
     if chg_type is None:
         chg_type = 'pctchg'
     else:
         chg_type ='unfchg'
     if val is None:
         val = 0.0001
-    
     pars = [
             'init_cno3', 'init_p', 'init_so4', 'init_ca', 'init_mg', 'init_na',
             'init_k', 'init_cl', 'init_co3', 'init_hco3']
@@ -530,7 +529,7 @@ def rt3d_initc_par(wd, chg_type=None, val=None):
     df['chg_type'] = chg_type
     df['val'] = val
     df.index = df.parnme
-    with open('mf_riv.par', 'w') as f:
+    with open('MODFLOW/rt3d_initc.par', 'w') as f:
         f.write("# rt3d_initc.par file was created by the 'apexmf' python package.\n")
         f.write("NAME   CHG_TYPE    VAL\n")
         f.write(
@@ -541,8 +540,46 @@ def rt3d_initc_par(wd, chg_type=None, val=None):
                                                         header=False,
                                                         justify="left")
             )
-    print("'mf_riv.par' file has been exported to the MODFLOW working directory!")
+    print("'rt3d_initc.par' file has been exported to the MODFLOW working directory!")
     return df
+
+
+def rt3d_initc_pars_tpl(tpl_file=None):
+    """write a template file for a salt cons parameter value file (rt3d_initc.par).
+
+    Args:
+        riv_par_file(`str`): the path and name of the existing model.in file
+        tpl_file (`str`, optional):  template file to write. If None, use
+            `riv_par_file` +".tpl". Default is None
+    Note:
+        Uses names in the first column in the pval file as par names.
+
+    Example:
+        pest_utils.model_in_to_template_file('path')
+
+    Returns:
+        **pandas.DataFrame**: a dataFrame with template file information
+    """
+
+    if tpl_file is None:
+        tpl_file = 'MODFLOW/rt3d_initc.par' + ".tpl"
+    initc_par_df = pd.read_csv(
+                        'MODFLOW/rt3d_initc.par',
+                        delim_whitespace=True,
+                        header=None, skiprows=2,
+                        names=["parnme", "chg_type", "parval1"])
+    initc_par_df.index = initc_par_df.parnme
+    initc_par_df.loc[:, "tpl"] = initc_par_df.parnme.apply(lambda x: " ~   {0:15s}   ~".format(x))
+    with open(tpl_file, 'w') as f:
+        f.write("ptf ~\n# RT3D Salt Init. Conc. template file.\n")
+        f.write("NAME   CHG_TYPE    VAL\n")
+        f.write(initc_par_df.loc[:, ["parnme", "chg_type", "tpl"]].to_string(
+                                                        col_space=0,
+                                                        formatters=[SFMT, SFMT, SFMT],
+                                                        index=False,
+                                                        header=False,
+                                                        justify="left"))
+    return initc_par_df
 
 
 

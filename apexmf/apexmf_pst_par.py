@@ -513,6 +513,38 @@ def crop_pars_tpl():
     print(crop_pars)
 
 
+def rt3d_initc_par(wd, chg_type=None, val=None):
+    if chg_type is None:
+        chg_type = 'pctchg'
+    else:
+        chg_type ='unfchg'
+    if val is None:
+        val = 0.0001
+    
+    pars = [
+            'init_cno3', 'init_p', 'init_so4', 'init_ca', 'init_mg', 'init_na',
+            'init_k', 'init_cl', 'init_co3', 'init_hco3']
+    
+    df = pd.DataFrame()
+    df['parnme'] = pars
+    df['chg_type'] = chg_type
+    df['val'] = val
+    df.index = df.parnme
+    with open('mf_riv.par', 'w') as f:
+        f.write("# rt3d_initc.par file was created by the 'apexmf' python package.\n")
+        f.write("NAME   CHG_TYPE    VAL\n")
+        f.write(
+            df.loc[:, ["parnme", "chg_type", "val"]].to_string(
+                                                        col_space=0,
+                                                        formatters=[SFMT, SFMT, SFMT],
+                                                        index=False,
+                                                        header=False,
+                                                        justify="left")
+            )
+    print("'mf_riv.par' file has been exported to the MODFLOW working directory!")
+    return df
+
+
 
 if __name__ == '__main__':
     wd = "D:\\Projects\\RegionalCalibration\\Autocalibration\\ani_apexmf_cal_v03"

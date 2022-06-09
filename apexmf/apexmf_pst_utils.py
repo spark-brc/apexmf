@@ -99,7 +99,7 @@ def create_apexmf_con(
         'pp_included',
         ]
     col02 = [
-        wd, wd+'\MODFLOW', sim_start, cal_start, cal_end, 
+        wd, wd+'/MODFLOW', sim_start, cal_start, cal_end, 
         cha_file, subs,
         gw_level, grids,
         lai_file, lai_subs,

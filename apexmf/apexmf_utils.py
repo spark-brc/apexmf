@@ -148,8 +148,6 @@ def all_seds(wd, rch_file, rch_num, start_date, obd_nam, time_step=None):
         df = df.loc[df['sub'] == int(rch_num)]
         df = df.drop('sub', axis=1)
         df.index = pd.date_range(start_date, periods=len(df), freq=time_step)
-        
-
         df.rename(columns = {'simulated':'{}_sub_{}'.format(scn_nam, rch_num)}, inplace = True)
         tot_df = pd.concat(
             [tot_df, df['{}_sub_{}'.format(scn_nam, rch_num)]], axis=1,

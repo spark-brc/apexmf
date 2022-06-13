@@ -12,6 +12,19 @@ import numpy as np
 # import h5py as hdf
 import os
 from io import StringIO
+import glob
+
+def get_nrow():
+    for filename in glob.glob("MODFLOW"+"/*.dis"):
+        with open(filename, "r") as f:
+            data = []
+            for line in f.readlines():
+                if not line.startswith("#"):
+                    data.append(line.replace('\n', '').split())
+        nrow = int(data[0][1])
+        ncol = int(data[0][2])
+    return nrow
+
 
 
 def cvt_array_fr_mmuse(wd, nrows, ncols, filenam):
@@ -285,12 +298,12 @@ def wt_df(start_date, grid_id, obd_nam, time_step=None, prep_sub=None):
                         names = ["grid_id", "mf_elev"],)
     mfobd_df = pd.read_csv(
                         "MODFLOW/" + mfobd_file,
-                        sep='\s+',
+                        sep=r'\s+',
                         index_col=0,
                         header=0,
                         parse_dates=True,
                         na_values=[-999, ""],
-                        delimiter="\t")
+                        delimiter=r"\t")
 
     grid_id_lst = mf_obs.index.astype(str).values.tolist()
     output_wt = pd.read_csv(
@@ -354,12 +367,12 @@ def wt_tot_df(sim_start, df_start, df_end, grid_ids, obd_nams, time_step=None):
                         names = ["grid_id", "mf_elev"],)
     mfobd_df = pd.read_csv(
                         "MODFLOW/" + mfobd_file,
-                        sep='\s+',
+                        sep=r'\s+',
                         index_col=0,
                         header=0,
                         parse_dates=True,
                         na_values=[-999, ""],
-                        delimiter="\t")
+                        delimiter=r"\t")
     grid_id_lst = mf_obs.index.astype(str).values.tolist()
     # read simulated water elevation
     output_wt = pd.read_csv(

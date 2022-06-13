@@ -15,6 +15,7 @@ import csv
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from termcolor import colored
+import glob
 
 
 opt_files_path = os.path.join(
@@ -922,8 +923,6 @@ def extract_salt_results(salt_subs, sim_start, cal_start, cal_end):
             print('salt_{}_{:03d}_mon.txt'.format(cn, i))
     print('Finished ...')    
 
-
-
 def modify_mf_tpl_path(pst_model_input):
     for i in range(len(pst_model_input)):
         if (
@@ -935,6 +934,38 @@ def modify_mf_tpl_path(pst_model_input):
             pst_model_input.iloc[i, 1] =  "MODFLOW" +'\\'+ pst_model_input.iloc[i, 1]
 
     return pst_model_input
+
+
+### Salt related
+def get_nrow():
+    for filename in glob.glob("MODFLOW"+"/*.dis"):
+        with open(filename, "r") as f:
+            data = []
+            for line in f.readlines():
+                if not line.startswith("#"):
+                    data.append(line.replace('\n', '').split())
+        nrow = int(data[0][1])
+        ncol = int(data[0][2])
+    return nrow
+
+def extract_org_salt_cons():
+    nrow = get_nrow()
+    for filename in glob.glob("MODFLOW"+"/*.btn"):
+        with open(filename, "r") as f:
+            data = f.readlines()
+            data1 = [x.split() for x in data] # make each line a list
+    init_salt_ions = ["cno3", "p", "so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    for ion in init_salt_ions:
+        for num, line in enumerate(data1):
+            if line != [] and len(line) >= 3:
+                if (line[0] == "1") and (line[2].lower() == ion):
+                    
+                    with open("MODFLOW/init_salt_{}.org".format(ion), 'w') as wf:
+                        for line in data[num+1:num+1+nrow]:
+                            wf.write(line)
+
+
+
 
 
 def _remove_readonly(func, path, excinfo):

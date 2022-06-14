@@ -25,8 +25,6 @@ def get_nrow():
         ncol = int(data[0][2])
     return nrow
 
-
-
 def cvt_array_fr_mmuse(wd, nrows, ncols, filenam):
     os.chdir(wd)
     df = pd.read_csv(filenam, delim_whitespace=True, skiprows=1, header=None)

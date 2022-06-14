@@ -935,39 +935,6 @@ def modify_mf_tpl_path(pst_model_input):
 
     return pst_model_input
 
-
-### Salt related
-def get_nrow():
-    for filename in glob.glob("MODFLOW"+"/*.dis"):
-        with open(filename, "r") as f:
-            data = []
-            for line in f.readlines():
-                if not line.startswith("#"):
-                    data.append(line.replace('\n', '').split())
-        nrow = int(data[0][1])
-        ncol = int(data[0][2])
-    return nrow
-
-def extract_org_salt_cons():
-    nrow = get_nrow()
-    for filename in glob.glob("MODFLOW"+"/*.btn"):
-        with open(filename, "r") as f:
-            data = f.readlines()
-            data1 = [x.split() for x in data] # make each line a list
-    init_salt_ions = ["cno3", "p", "so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
-    for ion in init_salt_ions:
-        for num, line in enumerate(data1):
-            if line != [] and len(line) >= 3:
-                if (line[0] == "1") and (line[2].lower() == ion):
-                    
-                    with open("MODFLOW/init_salt_{}.org".format(ion), 'w') as wf:
-                        for line in data[num+1:num+1+nrow]:
-                            wf.write(line)
-
-
-
-
-
 def _remove_readonly(func, path, excinfo):
     """remove readonly dirs, apparently only a windows issue
     add to all rmtree calls: shutil.rmtree(**,onerror=remove_readonly), wk"""

@@ -665,6 +665,61 @@ def update_btn():
                 af2.write(line_a2)   
         print("{} file has been updated ...".format(btn_f))   
 
+# salt_input
+def get_salt_nlines():
+    if not os.path.exists('SALINITY/salt_input.org'):
+        shutil.copy('SALINITY/salt_input', 'SALINITY/salt_input.org')
+        print('The original salt_input has been backed up...')
+    else:
+        print('The "salt_input.org" file already exists...')
+    with open('SALINITY/salt_input.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    nlines = []
+    for num, line in enumerate(data1):
+        if line != [] and len(line) >= 3:
+            if (line[0].lower() == "initial") and (line[1].lower() == "concentrations"):
+                nlines.append(num)
+            if (line[0].lower() == "initial") and (line[1].lower() == "salt"):
+                nlines.append(num)
+    return nlines
+
+def cvt_salt_grid_sub():
+    ions = ["so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    salt_inits = pd.DataFrame()
+    for ion in ions:
+        data = np.loadtxt("MODFLOW/init_{}.ref".format(ion), dtype=float)
+        data_l = data.flatten().tolist()
+        salt_inits[ion] = data_l
+    salt_inits['grid_id'] = [i for i in range(1, len(data_l)+1)]
+
+    link_df = pd.read_csv('MODFLOW/link_grid_sa', sep=r'\s+', skiprows=4)
+    sub_con_df = pd.DataFrame()
+    for i in link_df.sub_id.unique():
+        temp_df = link_df[link_df.loc[:, 'sub_id']==i]
+        temp_df2 = pd.concat([df.set_index('grid_id'),temp_df.set_index('grid_id')], axis=1, join='inner').mean(axis=0)
+        sub_con_df["sub{:03d}".format(i)] = temp_df2
+    sub_con_dff = sub_con_df.T[ions]
+    return sub_con_dff
+
+def update_salt_input():
+    nlines = get_salt_nlines()
+    sub_con_df = cvt_salt_grid_sub()
+    # for filename in glob.glob("MODFLOW"+"/*.btn"):
+    with open('SALINITY/salt_input.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    with open('SALINITY/salt_input','w') as wf:
+        for d in data[:nlines[0]+2]:
+            wf.write(d)
+        sub_con_df.to_csv(
+                    wf, sep =' ', index=None, header=None, float_format='%.5e',
+                    line_terminator='\n', encoding='utf-8'
+                    )
+        wf.write('\n')
+        for d in data[nlines[1]:]:
+            wf.write(d)
+
 
 
 if __name__ == '__main__':

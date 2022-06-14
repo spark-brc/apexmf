@@ -126,21 +126,6 @@ def init_setup(wd):
         ]
     
     suffix = ' passed'
-    # print(" Creating 'backup' folder ...",  end='\r', flush=True)
-    # if not os.path.isdir(os.path.join(wd, 'backup')):
-    #     os.makedirs(os.path.join(wd, 'backup'))
-    #     filelist =  os.listdir(apexwd)
-    #     for i in tqdm(filelist):
-    #         shutil.copy2(os.path.join(apexwd, i), os.path.join(wd, 'backup'))
-    # print(" Creating 'backup' folder ..." + colored(suffix, 'green'))
-    # print(" Creating 'echo' folder ...",  end='\r', flush=True)
-    # if not os.path.isdir(os.path.join(wd, 'echo')):
-    #     os.makedirs(os.path.join(wd, 'echo'))
-    # print(" Creating 'echo' folder ..." + colored(suffix, 'green'))
-    # print(" Creating 'sufi2.in' folder ...",  end='\r', flush=True)
-    # if not os.path.isdir(os.path.join(wd, 'sufi2.in')):
-    #     os.makedirs(os.path.join(wd, 'sufi2.in'))
-    # print(" Creating 'sufi2.in' folder ..."  + colored(suffix, 'green'))
 
     for j in filesToCopy:
         if not os.path.isfile(os.path.join(wd, j)):

@@ -697,9 +697,13 @@ def cvt_salt_grid_sub():
     sub_con_df = pd.DataFrame()
     for i in link_df.sub_id.unique():
         temp_df = link_df[link_df.loc[:, 'sub_id']==i]
-        temp_df2 = pd.concat([df.set_index('grid_id'),temp_df.set_index('grid_id')], axis=1, join='inner').mean(axis=0)
+        temp_df2 = pd.concat(
+            [salt_inits.set_index('grid_id'),temp_df.set_index('grid_id')], 
+            axis=1, join='inner'
+            ).mean(axis=0)
         sub_con_df["sub{:03d}".format(i)] = temp_df2
     sub_con_dff = sub_con_df.T[ions]
+    print('Updated gridded init salt ions have been converted to sub scales ...')
     return sub_con_dff
 
 def update_salt_input():
@@ -719,7 +723,7 @@ def update_salt_input():
         wf.write('\n')
         for d in data[nlines[1]:]:
             wf.write(d)
-
+    print('The "salt_input" file has been updated ...')
 
 
 if __name__ == '__main__':

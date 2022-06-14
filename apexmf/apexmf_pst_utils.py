@@ -610,20 +610,22 @@ def fdc_obd_to_ins(fdc_sims, fdc_obds):
         print('{}.ins file has been created...'.format(fdc_sim_inf))
 
 
-def salt_obd_to_ins(salt_sim_file, obd_file, col_name, start_day, end_day, time_step=None):
-    """extract a simulated streamflow from the output.rch file,
-        store it in each channel file.
+def salt_obd_to_ins(sub_id, salt_sim_file, obd_file, col_name, start_day, end_day, time_step=None):
+    """create instruction files using simulated and observed data
 
     Args:
-        - rch_file (`str`): the path and name of the existing output file
-        - channels (`list`): channel number in a list, e.g. [9, 60]
-        - start_day ('str'): calibration start day, e.g. '1/1/1993'
-        - end_day ('str'): calibration end day e.g. '12/31/2000'
-        - time_step (`str`): day, month, year
+        salt_sim_file (path): salt.output.channels path
+        obd_file (path): salt obd file
+        col_name (str): obd col name
+        start_day (str): simulation start day
+        end_day (str): calibration end day
+        time_step (str, optional): simulation time step. Defaults to None.
 
-    Example:
-        pest_utils.extract_month_str('path', [9, 60], '1/1/1993', '12/31/2000')
-    """ 
+    Returns:
+        dataframe: ins data
+    """
+    
+     
     if time_step is None:
         time_step = 'day'
     if time_step == 'month' or time_step == 'mon' or time_step == 'm':
@@ -652,16 +654,40 @@ def salt_obd_to_ins(salt_sim_file, obd_file, col_name, start_day, end_day, time_
     result['year'] = result['tdate'].dt.year
     result['day'] = result['tdate'].dt.day
 
+
+    # if time_step == 'day':
+    #     result['ins'] = (
+    #                     'l1 w !{}_'.format(col_name) + result["year"].map(str)[2:] +
+    #                     result["month"].map('{:02d}'.format) +
+    #                     result["day"].map('{:02d}'.format) + '!'
+    #                     )
+    # elif time_step == 'mon':
+    #     result['ins'] = 'l1 w !{}_'.format(col_name) + result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
+    # else:
+    #     print('are you performing a yearly calibration?')
+        
+    # result['{}_ins'.format(col_name)] = np.where(result[col_name].isnull(), 'l1', result['ins'])
+
+    # with open(salt_sim_file+'.ins', "w", newline='') as f:
+    #     f.write("pif ~" + "\n")
+    #     result['{}_ins'.format(col_name)].to_csv(f, sep='\t', encoding='utf-8', index=False, header=False)
+    # print('{}.ins file has been created...'.format(salt_sim_file))
+    # return result['{}_ins'.format(col_name)]
+
+
+    col_namef = col_name[0]+col_name[5:]
+    
     if time_step == 'day':
         result['ins'] = (
-                        'l1 w !{}_'.format(col_name) + result["year"].map(str) +
+                        'l1 w !d{:03d}_{}_'.format(sub_id, col_namef) + result["year"].map(str) +
                         result["month"].map('{:02d}'.format) +
                         result["day"].map('{:02d}'.format) + '!'
                         )
     elif time_step == 'mon':
-        result['ins'] = 'l1 w !{}_'.format(col_name) + result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
+        result['ins'] = 'l1 w !m{:03d}_{}_'.format(sub_id, col_namef)+ result["year"].map(str) + result["month"].map('{:02d}'.format) + '!'
     else:
         print('are you performing a yearly calibration?')
+
     result['{}_ins'.format(col_name)] = np.where(result[col_name].isnull(), 'l1', result['ins'])
 
     with open(salt_sim_file+'.ins', "w", newline='') as f:

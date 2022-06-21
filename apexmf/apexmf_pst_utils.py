@@ -134,7 +134,8 @@ def init_setup(wd):
     # if not os.path.isfile(os.path.join(wd, 'forward_run.py')):
     shutil.copy2(os.path.join(foward_path, 'forward_run.py'), os.path.join(wd, 'forward_run.py'))
     print(" '{}' file copied ...".format('forward_run.py') + colored(suffix, 'green'))        
-
+    shutil.copy2(os.path.join(foward_path, 'salt_forward_run.py'), os.path.join(wd, 'salt_forward_run.py'))
+    print(" '{}' file copied ...".format('salt_forward_run.py') + colored(suffix, 'green'))      
 
 def fix_riv_pkg(wd, riv_file):
     """ Delete duplicate river cells in an existing MODFLOW river packgage.

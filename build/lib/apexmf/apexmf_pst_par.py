@@ -383,7 +383,7 @@ def export_pardb_pest(par):
 def update_hk_pars(par):
     hk_df = pd.read_csv(
                         'MODFLOW/hk0pp.dat',
-                        sep='\s+',
+                        sep=r'\s+',
                         usecols=[4],
                         names=['hk_temp']
                         )
@@ -395,8 +395,8 @@ def update_hk_pars(par):
 
 def update_sy_pars(par):
     sy_df = pd.read_csv(
-                        'MODFLOW\sy0pp.dat',
-                        sep='\s+',
+                        'MODFLOW/sy0pp.dat',
+                        sep=r'\s+',
                         usecols=[4],
                         names=['sy_temp']
                         )
@@ -407,12 +407,12 @@ def update_sy_pars(par):
     return par_f
 
 def riv_par_to_template_file(riv_par_file, tpl_file=None):
-    """write a template file for a SWAT parameter value file (model.in).
+    """write a template file for a river parameter value file (mf_riv.par).
 
     Args:
-        model_in_file (`str`): the path and name of the existing model.in file
+        riv_par_file(`str`): the path and name of the existing model.in file
         tpl_file (`str`, optional):  template file to write. If None, use
-            `model_in_file` +".tpl". Default is None
+            `riv_par_file` +".tpl". Default is None
     Note:
         Uses names in the first column in the pval file as par names.
 
@@ -512,6 +512,218 @@ def crop_pars_tpl():
             )
     print(crop_pars)
 
+def rt3d_initc_par(chg_type=None, val=None):
+    if chg_type is None:
+        chg_type = 'pctchg'
+    else:
+        chg_type ='unfchg'
+    if val is None:
+        val = 0.0001
+    pars = [
+            'init_cno3', 'init_p', 'init_so4', 'init_ca', 'init_mg', 'init_na',
+            'init_k', 'init_cl', 'init_co3', 'init_hco3']
+    
+    df = pd.DataFrame()
+    df['parnme'] = pars
+    df['chg_type'] = chg_type
+    df['val'] = val
+    df.index = df.parnme
+    with open('MODFLOW/rt3d_initc.par', 'w') as f:
+        f.write("# rt3d_initc.par file was created by the 'apexmf' python package.\n")
+        f.write("NAME   CHG_TYPE    VAL\n")
+        f.write(
+            df.loc[:, ["parnme", "chg_type", "val"]].to_string(
+                                                        col_space=0,
+                                                        formatters=[SFMT, SFMT, SFMT],
+                                                        index=False,
+                                                        header=False,
+                                                        justify="left")
+            )
+    print("'rt3d_initc.par' file has been exported to the MODFLOW working directory!")
+    return df
+
+
+def rt3d_initc_pars_tpl(tpl_file=None):
+    """write a template file for a rt3d cons parameter value file (rt3d_initc.par).
+
+    Args:
+        riv_par_file(`str`): the path and name of the existing model.in file
+        tpl_file (`str`, optional):  template file to write. If None, use
+            `riv_par_file` +".tpl". Default is None
+    Note:
+        Uses names in the first column in the pval file as par names.
+
+    Example:
+        pest_utils.model_in_to_template_file('path')
+
+    Returns:
+        **pandas.DataFrame**: a dataFrame with template file information
+    """
+
+    if tpl_file is None:
+        tpl_file = 'MODFLOW/rt3d_initc.par' + ".tpl"
+    initc_par_df = pd.read_csv(
+                        'MODFLOW/rt3d_initc.par',
+                        delim_whitespace=True,
+                        header=None, skiprows=2,
+                        names=["parnme", "chg_type", "parval1"])
+    initc_par_df.index = initc_par_df.parnme
+    initc_par_df.loc[:, "tpl"] = initc_par_df.parnme.apply(lambda x: " ~   {0:15s}   ~".format(x))
+    with open(tpl_file, 'w') as f:
+        f.write("ptf ~\n# RT3D Init. Conc. template file.\n")
+        f.write("NAME   CHG_TYPE    VAL\n")
+        f.write(initc_par_df.loc[:, ["parnme", "chg_type", "tpl"]].to_string(
+                                                        col_space=0,
+                                                        formatters=[SFMT, SFMT, SFMT],
+                                                        index=False,
+                                                        header=False,
+                                                        justify="left"))
+    return initc_par_df
+
+### Salt related
+def get_nrow():
+    for filename in glob.glob("MODFLOW"+"/*.dis"):
+        with open(filename, "r") as f:
+            data = []
+            for line in f.readlines():
+                if not line.startswith("#"):
+                    data.append(line.replace('\n', '').split())
+        nrow = int(data[0][1])
+        ncol = int(data[0][2])
+    return nrow
+
+def extract_org_rt3d_cons():
+    nrow = get_nrow()
+    btn_files = [f for f in glob.glob("MODFLOW" + "/*.btn")]
+    if len(btn_files) == 1:
+        btn_f = os.path.basename(btn_files[0])
+        # duplicate original btn file
+        if not os.path.exists('MODFLOW/rt3d_btn.org'):
+            shutil.copy('MODFLOW/' + btn_f, 'MODFLOW/rt3d_btn.org')
+            print('The original RT3D BTN "{}" has been backed up...'.format(btn_f))
+        else:
+            print('The "rt3d_btn.org" file already exists...')
+
+    with open('MODFLOW/rt3d_btn.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    init_rt3d_ions = ["cno3", "p", "so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    for ion in init_rt3d_ions:
+        for num, line in enumerate(data1):
+            if line != [] and len(line) >= 3:
+                if (line[0] == "1") and (line[2].lower() == ion):
+                    if not os.path.exists("MODFLOW/init_{}.org".format(ion)):
+                        with open("MODFLOW/init_{}.org".format(ion), 'w') as wf:
+                            for line in data[num+1:num+1+nrow]:
+                                wf.write(line)
+                        print("'init_{}.org' file has been created ...".format(ion))
+                    else:
+                        print("'init_{}.org' already exists ...".format(ion))
+
+def update_rt3d_ions_refs():
+    # read rt3d_init.par file
+    rt3d_init_pars = pd.read_csv('MODFLOW/rt3d_initc.par', sep=r'\s+', comment='#', index_col=0)
+    for i in range(len(rt3d_init_pars)):
+        data = np.loadtxt("MODFLOW/{}.org".format(rt3d_init_pars.index[i]), dtype=float)
+        if rt3d_init_pars.iloc[i, 0] == "pctchg":
+            data = data + (data * float(rt3d_init_pars.iloc[i, 1]) / 100)
+        elif rt3d_init_pars.iloc[i, 0] == "unfchg":
+            data = data + float(rt3d_init_pars.iloc[i, 1])
+        np.savetxt("MODFLOW/{}.ref".format(rt3d_init_pars.index[i]), data, fmt='%.5e')
+        print("{}.ref has been updated ...".format(rt3d_init_pars.index[i]))
+
+def update_btn():
+    nrow = get_nrow()
+    # for filename in glob.glob("MODFLOW"+"/*.btn"):
+    with open('MODFLOW/rt3d_btn.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    ions = ["cno3", "p", "so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    nlines = []
+    for ion in ions:
+        for num, line in enumerate(data1):
+            if line != [] and len(line) >= 3:
+                if (line[0] == "1") and (line[2].lower() == ion):
+                    nlines.append(num)
+    btn_files = [f for f in glob.glob("MODFLOW" + "/*.btn")]
+    if len(btn_files) == 1:
+        btn_f = os.path.basename(btn_files[0])
+        filepath = "MODFLOW/" + btn_f
+        with open(filepath,'w') as wf:
+            for d in data[:nlines[0]]:
+                wf.write(str(d))      
+        for ion in ions:
+            with open(filepath,'a') as af:
+                df_a = np.loadtxt("MODFLOW/{}.ref".format("init_{}".format(ion)), dtype=float)
+                af.write("1 0.00 {}\n".format(ion.lower()))
+                for line_a in df_a:
+                    af.write(" ".join(map("{:.5e}".format, line_a)))
+                    af.write('\n')
+                af.write('\n')
+        with open(filepath,'a') as af2:
+            for line_a2 in data[nrow+nlines[-1]+2:]:
+                af2.write(line_a2)   
+        print("{} file has been updated ...".format(btn_f))   
+
+# salt_input
+def get_salt_nlines():
+    if not os.path.exists('SALINITY/salt_input.org'):
+        shutil.copy('SALINITY/salt_input', 'SALINITY/salt_input.org')
+        print('The original salt_input has been backed up...')
+    else:
+        print('The "salt_input.org" file already exists...')
+    with open('SALINITY/salt_input.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    nlines = []
+    for num, line in enumerate(data1):
+        if line != [] and len(line) >= 3:
+            if (line[0].lower() == "initial") and (line[1].lower() == "concentrations"):
+                nlines.append(num)
+            if (line[0].lower() == "initial") and (line[1].lower() == "salt"):
+                nlines.append(num)
+    return nlines
+
+def cvt_salt_grid_sub():
+    ions = ["so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    salt_inits = pd.DataFrame()
+    for ion in ions:
+        data = np.loadtxt("MODFLOW/init_{}.ref".format(ion), dtype=float)
+        data_l = data.flatten().tolist()
+        salt_inits[ion] = data_l
+    salt_inits['grid_id'] = [i for i in range(1, len(data_l)+1)]
+
+    link_df = pd.read_csv('MODFLOW/link_grid_sa', sep=r'\s+', skiprows=4)
+    sub_con_df = pd.DataFrame()
+    for i in link_df.sub_id.unique():
+        temp_df = link_df[link_df.loc[:, 'sub_id']==i]
+        temp_df2 = pd.concat(
+            [salt_inits.set_index('grid_id'),temp_df.set_index('grid_id')], 
+            axis=1, join='inner'
+            ).mean(axis=0)
+        sub_con_df["sub{:03d}".format(i)] = temp_df2
+    sub_con_dff = sub_con_df.T[ions]
+    print('Updated gridded init salt ions have been converted to sub scales ...')
+    return sub_con_dff
+
+def update_salt_input():
+    nlines = get_salt_nlines()
+    sub_con_df = cvt_salt_grid_sub()
+    # for filename in glob.glob("MODFLOW"+"/*.btn"):
+    with open('SALINITY/salt_input.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    with open('SALINITY/salt_input','w') as wf:
+        for d in data[:nlines[0]+2]:
+            wf.write(d)
+        sub_con_df.to_csv(
+                    wf, sep =' ', index=None, header=None, float_format='%.5e',
+                    line_terminator='\n', encoding='utf-8'
+                    )
+        wf.write('\n')
+        for d in data[nlines[1]:]:
+            wf.write(d)
+    print('The "salt_input" file has been updated ...')
 
 
 if __name__ == '__main__':

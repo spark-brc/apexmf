@@ -34,8 +34,13 @@ def modify_hk_sy_pars_pp(pp_included):
 def execute_apexmf():
     des = "running model"
     time_stamp(des)
+    apexmf_pst_par.extract_org_rt3d_cons()
+    apexmf_pst_par.update_rt3d_ions_refs()
+    apexmf_pst_par.update_btn()
+    apexmf_pst_par.update_salt_input()
+
     # pyemu.os_utils.run('APEX-MODFLOW3.exe >_s+m.stdout', cwd='.')
-    pyemu.os_utils.run('apexmf', cwd='.')
+    pyemu.os_utils.run('APEX-MODFLOW-Salt-V2.exe', cwd='.')
 
 def extract_stf_results(cha_file, subs, sim_start, cal_start, cal_end):
     if time_step == 'day':
@@ -80,8 +85,6 @@ def extract_salt_results(salt_subs, sim_start, cal_start, cal_end):
     des = "simulation successfully completed | extracting simulated salt loads and concentrations"
     time_stamp(des)
     apexmf_pst_utils.extract_salt_results(salt_subs, sim_start, cal_start, cal_end)
-
-
 
     # extract_watertable_sim([5699, 5832], '1/1/1980', '12/31/2005')
 
@@ -130,4 +133,7 @@ if __name__ == '__main__':
     if apexmf_con.loc['fdc', 'vals'] == 'y':
         extract_slopes(cha_file, subs, sim_start, cal_start, cal_end, 
             min_fdc, max_fdc, interval_num, time_step=None)
-
+    if apexmf_con.loc['salt_subs', 'vals'] != 'n':
+        salt_subs = apexmf_con.loc['salt_subs','vals'].strip('][').split(', ')
+        salt_subs = [int(i) for i in salt_subs]
+        extract_salt_results(salt_subs, sim_start, cal_start, cal_end)

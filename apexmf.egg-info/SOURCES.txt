@@ -12,6 +12,7 @@ apexmf/apexmf_utils.py
 apexmf/forward_run.py
 apexmf/forward_run_gns.py
 apexmf/forward_run_tmp.py
+apexmf/salt_forward_run.py
 apexmf/swat_par_chg_run.py
 apexmf/utils.py
 apexmf/version.py

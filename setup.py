@@ -12,7 +12,7 @@ with open("README.rst", "r") as fd:
     long_desc = fd.read()
 
 
-VERSION = '0.1.6'
+VERSION = '0.2.0'
 DESCRIPTION = 'apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.'
 # LONG_DESCRIPTION = 'A package that allows to work with apex-MODFLOW model'
 

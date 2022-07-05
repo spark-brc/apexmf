@@ -935,6 +935,55 @@ def extract_salt_results(salt_subs, sim_start, cal_start, cal_end):
             print('salt_{}_{:03d}_mon.txt'.format(cn, i))
     print('Finished ...')    
 
+def extract_salt_results2(salt_subs, sim_start, cal_start, cal_end):
+    """extract a simulated streamflow from the output.rch file,
+       store it in each channel file.
+
+    Args:
+        - rch_file (`str`): the path and name of the existing output file
+        - channels (`list`): channel number in a list, e.g. [9, 60]
+        - start_day ('str'): simulation start day after warm period, e.g. '1/1/1985'
+        - end_day ('str'): simulation end day e.g. '12/31/2005'
+
+    Example:
+        apexmf_pst_utils.extract_month_str('path', [9, 60], '1/1/1993', '1/1/1993', '12/31/2000')
+    """
+    if not os.path.exists('SALINITY/salt.output.channels'):
+        raise Exception("'salt.output.channels' file not found")
+    salt_df = pd.read_csv(
+                        "SALINITY/salt.output.channels",
+                        delim_whitespace=True,
+                        skiprows=4,
+                        header=0,
+                        index_col=0,
+                        )
+    
+    for i in salt_subs:
+        sdf = pd.DataFrame()
+        sdf.index = pd.date_range(sim_start, cal_end)
+
+        salt_dff = salt_df.loc[i]
+        salt_dff['tempd'] = salt_dff.loc[:, 'year'].astype(str) + salt_dff['day'].map('{:03d}'.format)
+        salt_dff['date'] = pd.to_datetime(salt_dff.year, format='%Y') + pd.to_timedelta(salt_dff.day - 1, unit='d')
+        salt_dff.set_index('date', inplace=True)
+        salt_dff.drop(['tempd'], axis=1, inplace=True)
+        sdf = pd.concat([sdf, salt_dff], axis=1)
+        sdf = sdf.iloc[:, 5:] # only cols we need
+        sdf.fillna(0, inplace=True)
+        sdf = sdf[cal_start:cal_end]
+        colnams = sdf.columns
+        # print out daily
+        for cn in colnams:
+            sdff = sdf.loc[:, cn]
+            sdff.to_csv('salt_{}_{:03d}_day.txt'.format(cn, i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+            print('salt_{}_{:03d}_day.txt'.format(cn, i))
+            msdf = sdff.resample('M').mean()
+            msdf.to_csv('salt_{}_{:03d}_mon.txt'.format(cn, i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
+            print('salt_{}_{:03d}_mon.txt'.format(cn, i))
+    print('Finished ...')    
+
+
+
 def modify_mf_tpl_path(pst_model_input):
     for i in range(len(pst_model_input)):
         if (

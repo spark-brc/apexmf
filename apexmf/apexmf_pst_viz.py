@@ -129,7 +129,10 @@ def get_stats(df):
     return df_nse, df_rmse, df_pibas, r_squared
 
 
-def stf_plot_test(plot_df, cal_period=None, val_period=None):
+def stf_plot_test(plot_df, cal_period=None, val_period=None, title=None):
+    if title is None:
+        title = 'NAN'
+    
 
     if cal_period:
         cal_df = plot_df[cal_period[0]:cal_period[1]]
@@ -137,33 +140,34 @@ def stf_plot_test(plot_df, cal_period=None, val_period=None):
         val_df = plot_df[val_period[0]:val_period[1]]
     colnams = plot_df.columns.tolist()
     # plot
-    fig, ax = plt.subplots(figsize=(16, 4))
+    fig, ax = plt.subplots(figsize=(16, 3))
     
     ax.grid(True)
     # cali
-    ax.plot(cal_df.index, cal_df.iloc[:, 0], label='Calibrated', color='green', marker='^', alpha=0.7)
-    ax.plot(val_df.index, val_df.iloc[:, 0], label='Validated', color='m', marker='x', alpha=0.7)
+    ax.plot(cal_df.index, cal_df.iloc[:, 0], label='Calibrated', color='k', alpha=0.7)
+    ax.plot(val_df.index, val_df.iloc[:, 0], 'k--', label='Validated' , alpha=0.7)
     ax.scatter(
         plot_df.index, plot_df.iloc[:, 1], label='Observed',
-        # color='red',
-        facecolors="None", edgecolors='red',
+        color='red',
+        # facecolors="None", edgecolors='red',
         lw=1.5,
         alpha=0.4,
-        # zorder=2,
+        zorder=2,
         )
-    ax.plot(plot_df.index, plot_df.iloc[:, 1], color='red', alpha=0.4, zorder=2,)
+    # ax.plot(plot_df.index, plot_df.iloc[:, 1], color='red', alpha=0.4, zorder=2,)
     ax2=ax.twinx()
     ax2.bar(
         plot_df.index, plot_df.prep, label='Precipitation',
         width=20,
-        color="blue", align='center', alpha=0.5, zorder=0)
+        color="k", align='center', alpha=0.3, zorder=0)
     ax2.set_ylabel("Precipitation $(mm)$",color="blue",fontsize=14)
     ax.set_ylabel("Stream Discharge $(m^3/s)$",fontsize=14)
     ax2.invert_yaxis()
     ax2.set_ylim(plot_df.prep.max()*3, 0)
-    ax.margins(y=0.2)
+    ax.margins(x=0)
     ax.tick_params(axis='both', labelsize=12)
-    ax2.tick_params(axis='y', labelsize=12)    
+    ax2.tick_params(axis='y', labelsize=12)
+    ax.set_xlim((pd.to_datetime('1992-01-01'), pd.to_datetime('2019-12-31')))
     # add stats cal
     cal_nse, cal_rmse, cal_pbias, cal_rsquared = get_stats(cal_df)
     ax.text(
@@ -188,11 +192,11 @@ def stf_plot_test(plot_df, cal_period=None, val_period=None):
 
     ax.legend(
         lines+h2, labels+l2, loc = 'upper right', ncol=4,
-        bbox_to_anchor=(1, 1.13),
+        bbox_to_anchor=(1, 1.2),
         fontsize=12)
     # plt.legend()
-    plt.savefig('temp.png', dpi=600, bbox_inches="tight")
-    print(os.getcwd())
+    plt.savefig(str(title)+'ttt.jpg', dpi=600, bbox_inches="tight")
+    # print(os.getcwd())
     
     plt.show()
 
@@ -241,17 +245,18 @@ def wt_df(start_date, grid_id, obd_nam, time_step=None, prep_sub=None):
                         header=0,
                         parse_dates=True,
                         na_values=[-999, ""],
-                        delimiter=r"\t",
+                        # delimiter=r"\t",
                         # engine='python'
                         )
 
     grid_id_lst = mf_obs.index.astype(str).values.tolist()
     output_wt = pd.read_csv(
-                        "MODFLOW/apexmf_out_MF_obs",
+                        "MODFLOW/amf_MODFLOW_obs_head",
                         delim_whitespace=True,
                         skiprows = 1,
                         names = grid_id_lst,)
-    output_wt = output_wt[str(grid_id)] - float(mf_obs.loc[int(grid_id)])
+    # output_wt = output_wt[str(grid_id)] - float(mf_obs.loc[int(grid_id)])
+    output_wt = output_wt[str(grid_id)]
     output_wt.index = pd.date_range(start_date, periods=len(output_wt))
 
     if time_step == 'M':
@@ -302,7 +307,8 @@ def wt_df2(start_date, grid_id, obd_nam, time_step=None, prep_sub=None):
                         header=0,
                         parse_dates=True,
                         na_values=[-999, ""],
-                        delimiter="\t")
+                        # delimiter="\t"
+                        )
 
 
     grid_id_lst = mf_obs.index.astype(str).values.tolist()
@@ -347,31 +353,31 @@ def wt_plot(plot_df):
     # plot
     fig, ax = plt.subplots(figsize=(12, 4))
     ax.grid(True)
-    ax.plot(plot_df.index, plot_df.iloc[:, 0], label='Simulated', color='green', marker='^', alpha=0.7)
+    ax.plot(plot_df.index, plot_df.iloc[:, 0], label='Simulated', color='k', alpha=0.7)
     ax.scatter(
         plot_df.index, plot_df.iloc[:, 1], label='Observed',
-        # color='red',
-        facecolors="None", edgecolors='red',
+        color='red',
+        # facecolors="None", edgecolors='red',
         lw=1.5,
         alpha=0.4,
         # zorder=2,
         )
-    ax.plot(plot_df.index, plot_df.iloc[:, 1], color='red', alpha=0.4, zorder=2,)
-    ax2=ax.twinx()
-    ax2.bar(
-        plot_df.index, plot_df.prep, label='Precipitation',
-        width=20,
-        color="blue", align='center', alpha=0.5, zorder=0)
-    ax2.set_ylabel("Precipitation $(mm)$",color="blue",fontsize=14)
+    # ax.plot(plot_df.index, plot_df.iloc[:, 1], color='red', alpha=0.4, zorder=2,)
+    # ax2=ax.twinx()
+    # ax2.bar(
+    #     plot_df.index, plot_df.prep, label='Precipitation',
+    #     width=20,
+    #     color="blue", align='center', alpha=0.5, zorder=0)
+    # ax2.set_ylabel("Precipitation $(mm)$",color="blue",fontsize=14)
     ax.set_ylabel("Depth to Water $(m)$",fontsize=14)
-    ax2.invert_yaxis()
-    ax2.set_ylim(plot_df.prep.max()*3, 0)
+    # ax2.invert_yaxis()
+    # ax2.set_ylim(plot_df.prep.max()*3, 0)
     ax.margins(y=0.2)
     ax.tick_params(axis='both', labelsize=12)
-    ax2.tick_params(axis='y', labelsize=12)    
+    # ax2.tick_params(axis='y', labelsize=12)    
     
     # add stats
-    plot_df = plot_df.drop('prep', axis=1)
+    # plot_df = plot_df.drop('prep', axis=1)
     org_stat = plot_df.dropna()
 
     sim_org = org_stat.iloc[:, 0].to_numpy()

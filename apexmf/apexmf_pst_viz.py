@@ -549,7 +549,7 @@ def y_fmt(y, pos):
     return y
 
 
-def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
+def dtw_sim_obd(st_date, ed_date, grid_id, obdnam, time_step=None):
     
     if time_step is None:
         obd_file = 'dtw_day.obd'
@@ -558,7 +558,7 @@ def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
     else:
         obd_file = 'dtw_day.obd'
     dtw_sim = pd.read_csv(
-                        'wt_{}.txt'.format(grid_id),
+                        'dtw_{}.txt'.format(grid_id),
                         sep=r'\s+',
                         index_col=0,
                         parse_dates=True,
@@ -567,14 +567,14 @@ def dtw_sim_obd(st_date, ed_date, grid_id, time_step=None):
     dtw_obd = pd.read_csv(
                         'MODFLOW/' + obd_file,
                         sep='\t',
-                        usecols=['date', 'wt{:05d}'.format(grid_id)],
+                        usecols=['date', obdnam],
                         index_col=0,
                         parse_dates=True,
                         na_values=[-999, ""]
                         )
     df = pd.concat([dtw_sim, dtw_obd], axis=1)
     # NOTE: temp
-    df['wt{:05d}'.format(grid_id)].fillna(0, inplace=True)
+    # df['wt{:05d}'.format(grid_id)].fillna(0, inplace=True)
     #
 
     df = df[st_date:ed_date]

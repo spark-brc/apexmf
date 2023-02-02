@@ -21,6 +21,7 @@ apexmf.egg-info/SOURCES.txt
 apexmf.egg-info/dependency_links.txt
 apexmf.egg-info/requires.txt
 apexmf.egg-info/top_level.txt
+apexmf/opt_files/amrs_rel230127.exe
 apexmf/opt_files/apex.parm.xlsx
 apexmf/opt_files/beopest64.exe
 apexmf/opt_files/crop.parm

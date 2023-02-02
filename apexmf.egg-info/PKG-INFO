@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: apexmf
-Version: 0.2.1
+Version: 0.3.0
 Summary: apexmf is a set of python modules for APEX-MODFLOW model evaluation and parameter estimation.
 Download-URL: https://pypi.org/project/apexmf
 Author: Seonggyu Park
@@ -31,8 +31,8 @@ apexmf
 .. image:: https://img.shields.io/pypi/l/apexmf?color=green
    :target: https://opensource.org/licenses/BSD-3-Clause
    :alt: PyPI - License
-.. image:: https://zenodo.org/badge/304147230.svg?color=orange
-   :target: https://zenodo.org/badge/latestdoi/304147230
+.. image:: https://zenodo.org/badge/304434074.svg?color=orange
+   :target: https://zenodo.org/badge/latestdoi/304434074
 
 `apexmf` is a set of python modules for APEX-MODFLOW model (Bailey et al., 2021) parameter estimation and uncertainty analysis with the open-source suite PEST (Doherty 2010a and 2010b, and Doherty and other, 2010).
 
@@ -58,6 +58,5 @@ apexmf
    'i64pest.exe' file copied ... passed
    'i64pwtadj1.exe' file copied ... passed
    'forward_run.py' file copied ... passed
-
 
 

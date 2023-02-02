@@ -26,3 +26,5 @@ apexmf/opt_files/beopest64.exe
 apexmf/opt_files/crop.parm
 apexmf/opt_files/i64pest.exe
 apexmf/opt_files/i64pwtadj1.exe
+apexmf/salt/__init__.py
+apexmf/salt/salt_handler.py

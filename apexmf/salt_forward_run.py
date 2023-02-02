@@ -40,7 +40,7 @@ def execute_apexmf():
     apexmf_pst_par.update_salt_input()
 
     # pyemu.os_utils.run('APEX-MODFLOW3.exe >_s+m.stdout', cwd='.')
-    pyemu.os_utils.run('APEX-MODFLOW-Salt-V2.exe', cwd='.')
+    pyemu.os_utils.run('amrs_rel230127.exe', cwd='.')
 
 def extract_stf_results(cha_file, subs, sim_start, cal_start, cal_end):
     if time_step == 'day':

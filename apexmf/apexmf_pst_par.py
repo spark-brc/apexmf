@@ -136,7 +136,7 @@ def riv_par(wd):
                         f, sep='\t',
                         header=False,
                         index=False,
-                        line_terminator='\n',
+                        lineterminator='\n',
                         encoding='utf-8'
                         )
         print(os.path.basename(riv_f) + " file is overwritten successfully!")

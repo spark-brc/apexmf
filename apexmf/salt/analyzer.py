@@ -1,3 +1,5 @@
+# from apexmf.salt.salt_handler import SaltAnalysis
+
 import os
 import pandas as pd
 import numpy as np
@@ -10,7 +12,6 @@ class SaltAnalysis(object):
 
     def __init__(self, wd):
         os.chdir(wd)
-
 
     def load_salt_cha_result(self):
         if not os.path.exists('SALINITY/salt.output.channels'):
@@ -69,11 +70,23 @@ class SaltAnalysis(object):
     #     return df_nse, df_rmse, df_pibas, r_squared
 
 
+font = {"family": "calibri", "weight": "normal", "size": 12}
 class SaltViz(object):
 
     def __init__(self, df):
         self.df = df
 
+    def plot_hist(self, ax, ion_nam, label=None):
+        
+        plt.rc("font", **font)
+        ax.hist(
+            self.df[ion_nam], 
+            bins=np.linspace(self.df[ion_nam].min(), self.df[ion_nam].max(), 20), 
+            alpha=0.5, label=label)
+        ax.set_ylabel("Density")
+        ax.set_xlabel(ion_nam)
+
+        
     def hydro_sim_obd02(self, ax, height=None):
         if height is None:
             height = 3
@@ -141,7 +154,6 @@ class SaltViz(object):
         ax.set_xlabel("Simulated",fontsize=12)
 
 
-
     def reg_line(self, fmin=None, fmax=None):
         fig, ax = plt.subplots(figsize=(4, 3.5))
         dmin = self.df.min().min()
@@ -151,7 +163,6 @@ class SaltViz(object):
             fmin = dmin
         if fmax is None:
             fmax = dmax
-
         ax.plot([fmin, fmax], [fmin, fmax], 'k--', alpha=0.2)
         ax.scatter(
             self.df.iloc[:, 0], self.df.iloc[:, 1],
@@ -166,7 +177,6 @@ class SaltViz(object):
         fig.tight_layout()
         # plt.savefig('1to1.jpg', dpi=600, bbox_inches="tight")
         plt.show() 
-
 
 def get_stats(df_stat):
     df_stat = df_stat.dropna()

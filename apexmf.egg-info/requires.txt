@@ -1,7 +1,7 @@
 pandas
 numpy
 pyemu
-flopy<=3.3.4
+flopy
 scipy
 matplotlib
 openpyxl

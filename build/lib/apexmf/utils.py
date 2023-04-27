@@ -27,7 +27,7 @@ class ObjFns:
                 np.sum((obds - sims) ** 2, axis=0, dtype=np.float64)
                 / np.sum((obds - np.mean(obds)) ** 2, dtype=np.float64)
         )
-        return nse_
+        return round(nse_, 4)
 
     @staticmethod
     def rmse(sims, obds):
@@ -45,7 +45,7 @@ class ObjFns:
         rmse_ = np.sqrt(np.mean((obds - sims) ** 2,
                                 axis=0, dtype=np.float64))
 
-        return rmse_
+        return round(rmse_, 4)
 
     @staticmethod
     def pbias(sims, obds):
@@ -63,7 +63,7 @@ class ObjFns:
         pbias_ = (100 * np.sum(obds - sims, axis=0, dtype=np.float64)
                 / np.sum(obds))
 
-        return pbias_
+        return round(pbias_, 4)
 
     @staticmethod
     def rsq(sims, obds):
@@ -77,7 +77,7 @@ class ObjFns:
                 (sum((obds - obds.mean())**2)* (sum((sims-sims.mean())**2))
             ))
         )
-        return rsq_
+        return round(rsq_, 4)
 
 class DefineTime:
 
@@ -100,4 +100,4 @@ class DefineTime:
             eddate = datetime.datetime(edyr, 12, 31)
             stdate_ = stdate.strftime("%m/%d/%Y")
             eddate_ = eddate.strftime("%m/%d/%Y")
-            return stdate_, eddate_
+            return stdate_, eddate_, ptcode

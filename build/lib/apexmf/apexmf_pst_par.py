@@ -136,7 +136,7 @@ def riv_par(wd):
                         f, sep='\t',
                         header=False,
                         index=False,
-                        line_terminator='\n',
+                        lineterminator='\n',
                         encoding='utf-8'
                         )
         print(os.path.basename(riv_f) + " file is overwritten successfully!")
@@ -718,7 +718,7 @@ def update_salt_input():
             wf.write(d)
         sub_con_df.to_csv(
                     wf, sep =' ', index=None, header=None, float_format='%.5e',
-                    line_terminator='\n', encoding='utf-8'
+                    lineterminator='\n', encoding='utf-8'
                     )
         wf.write('\n')
         for d in data[nlines[1]:]:

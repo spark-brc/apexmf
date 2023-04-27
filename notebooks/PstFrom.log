@@ -1,0 +1,6 @@
+2023-04-27 09:58:30.285919 starting: opening PstFrom.log for logging
+2023-04-27 09:58:30.285919 starting PstFrom process
+2023-04-27 09:58:30.285919 starting: setting up dirs
+2023-04-27 09:58:30.287045 starting: copying original_d 'd:\Projects\Watersheds\Animas\Analysis\AMRSs\manul_calibration\Animas_AMRS-Fire_org' to new_d 'd:\Projects\Watersheds\Animas\Analysis\AMRSs\manul_calibration\ies_template'
+2023-04-27 09:58:45.221245 finished: copying original_d 'd:\Projects\Watersheds\Animas\Analysis\AMRSs\manul_calibration\Animas_AMRS-Fire_org' to new_d 'd:\Projects\Watersheds\Animas\Analysis\AMRSs\manul_calibration\ies_template' took: 0:00:14.934200
+2023-04-27 09:58:45.222245 finished: setting up dirs took: 0:00:14.936326

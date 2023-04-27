@@ -100,4 +100,4 @@ class DefineTime:
             eddate = datetime.datetime(edyr, 12, 31)
             stdate_ = stdate.strftime("%m/%d/%Y")
             eddate_ = eddate.strftime("%m/%d/%Y")
-            return stdate_, eddate_
+            return stdate_, eddate_, ptcode

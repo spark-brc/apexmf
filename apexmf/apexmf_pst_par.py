@@ -665,6 +665,49 @@ def update_btn():
                 af2.write(line_a2)   
         print("{} file has been updated ...".format(btn_f))   
 
+
+
+def update_btn_pp():
+    nrow = get_nrow()
+    # for filename in glob.glob("MODFLOW"+"/*.btn"):
+    with open('MODFLOW/rt3d_btn.org', "r") as f:
+        data = f.readlines()
+        data1 = [x.split() for x in data] # make each line a list
+    ions = ["cno3", "p", "so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    nlines = []
+    for ion in ions:
+        for num, line in enumerate(data1):
+            if line != [] and len(line) >= 3:
+                if (line[0] == "1") and (line[2].lower() == ion):
+                    nlines.append(num)
+    btn_files = [f for f in glob.glob("MODFLOW" + "/*.btn")]
+    sions_ = ["SO4", "Ca", "Mg", "Na", "K", "Cl", "CO3", "HCO3"]
+    sionsf = [f"salt_{i.lower()}0pp.dat" for i in sions_]
+    sionsf = ["init_cno3.org", "init_p.org"] + sionsf
+
+    if len(btn_files) == 1:
+        btn_f = os.path.basename(btn_files[0])
+        filepath = "MODFLOW/" + btn_f
+        with open(filepath,'w') as wf:
+            for d in data[:nlines[0]]:
+                wf.write(str(d))      
+        for ion, sf in zip(ions, sionsf):
+            with open(filepath,'a') as af:
+                if sf == "init_cno3.org" or sf == "init_p.org":
+                    df_a = np.loadtxt("MODFLOW/{}.ref".format("init_{}".format(ion)), dtype=float)
+                else:
+                    df_a = np.loadtxt("MODFLOW/{}.ref".format(sf), dtype=float)
+                af.write("1 0.00 {}\n".format(ion.lower()))
+                for line_a in df_a:
+                    af.write(" ".join(map("{:.5e}".format, line_a)))
+                    af.write('\n')
+                af.write('\n')
+        with open(filepath,'a') as af2:
+            for line_a2 in data[nrow+nlines[-1]+2:]:
+                af2.write(line_a2)   
+        print("{} file has been updated ...".format(btn_f))   
+
+
 # salt_input
 def get_salt_nlines():
     if not os.path.exists('SALINITY/salt_input.org'):
@@ -706,9 +749,34 @@ def cvt_salt_grid_sub():
     print('Updated gridded init salt ions have been converted to sub scales ...')
     return sub_con_dff
 
+def cvt_salt_grid_sub_pp():
+    ions = ["so4", "ca", "mg", "na", "k", "cl", "co3", "hco3"]
+    sionsf = [f"salt_{i.lower()}0pp.dat" for i in ions] 
+    salt_inits = pd.DataFrame()
+    for ion, sf in zip(ions, sionsf):
+        data = np.loadtxt("MODFLOW/{}.ref".format(sf), dtype=float)
+        data_l = data.flatten().tolist()
+        salt_inits[ion] = data_l
+    salt_inits['grid_id'] = [i for i in range(1, len(data_l)+1)]
+
+    link_df = pd.read_csv('MODFLOW/link_grid_sa', sep=r'\s+', skiprows=4)
+    sub_con_df = pd.DataFrame()
+    for i in link_df.sub_id.unique():
+        temp_df = link_df[link_df.loc[:, 'sub_id']==i]
+        temp_df2 = pd.concat(
+            [salt_inits.set_index('grid_id'),temp_df.set_index('grid_id')], 
+            axis=1, join='inner'
+            ).mean(axis=0)
+        sub_con_df["sub{:03d}".format(i)] = temp_df2
+    sub_con_dff = sub_con_df.T[ions]
+    print('Updated gridded init salt ions have been converted to sub scales ...')
+    return sub_con_dff
+
+
 def update_salt_input():
     nlines = get_salt_nlines()
-    sub_con_df = cvt_salt_grid_sub()
+    # sub_con_df = cvt_salt_grid_sub()
+    sub_con_df = cvt_salt_grid_sub_pp()
     # for filename in glob.glob("MODFLOW"+"/*.btn"):
     with open('SALINITY/salt_input.org', "r") as f:
         data = f.readlines()

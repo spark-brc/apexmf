@@ -31,14 +31,27 @@ def modify_hk_sy_pars_pp(pp_included):
         pyemu.utils.geostats.fac2real(i, factors_file=i+'.fac', out_file=outfile)
     os.chdir(wd)
 
+def modify_salt_pars_pp():
+    mf_wd = wd + "\MODFLOW"
+    os.chdir(mf_wd)
+    sions_ = ["SO4", "Ca", "Mg", "Na", "K", "Cl", "CO3", "HCO3"]
+    sionsf = [f"salt_{i.lower()}0pp.dat" for i in sions_] 
+    des = "modifying Salt parameters"
+    time_stamp(des)
+    for sf in sionsf:
+        outfile = sf + '.ref'
+        pyemu.utils.geostats.fac2real(sf, factors_file=sf+'.fac', out_file=outfile)
+    os.chdir(wd)
+
+
 def execute_apexmf():
     des = "running model"
     time_stamp(des)
-    apexmf_pst_par.extract_org_rt3d_cons()
-    apexmf_pst_par.update_rt3d_ions_refs()
-    apexmf_pst_par.update_btn()
+    # apexmf_pst_par.extract_org_rt3d_cons()
+    # apexmf_pst_par.update_rt3d_ions_refs()
+    # apexmf_pst_par.update_btn()
+    apexmf_pst_par.update_btn_pp()
     apexmf_pst_par.update_salt_input()
-
     # pyemu.os_utils.run('APEX-MODFLOW3.exe >_s+m.stdout', cwd='.')
     pyemu.os_utils.run('amrs_rel230127.exe', cwd='.')
 
@@ -112,6 +125,9 @@ if __name__ == '__main__':
         pp_included = apexmf_con.loc['pp_included','vals'].strip('][').split(', ')
         pp_included = [i.replace("'", "").strip() for i in pp_included]  
         modify_hk_sy_pars_pp(pp_included)
+    
+    modify_salt_pars_pp()
+
     # execute model
     execute_apexmf()
     # extract sims

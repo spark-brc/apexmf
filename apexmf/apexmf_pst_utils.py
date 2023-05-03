@@ -323,8 +323,8 @@ def extract_depth_to_water(grid_ids, start_day, end_day):
     Example:
         pest_utils.extract_depth_to_water('path', [9, 60], '1/1/1993', '12/31/2000')
     """
-    if not os.path.exists('MODFLOW/apexmf_out_MF_obs'):
-        raise Exception("'apexmf_out_MF_obs' file not found")
+    if not os.path.exists('MODFLOW/amf_MODFLOW_obs_head'):
+        raise Exception("'amf_MODFLOW_obs_head' file not found")
     if not os.path.exists('MODFLOW/modflow.obs'):
         raise Exception("'modflow.obs' file not found")
     mf_obs_grid_ids = pd.read_csv(
@@ -338,18 +338,16 @@ def extract_depth_to_water(grid_ids, start_day, end_day):
 
     # set index by modflow grid ids
     mf_obs_grid_ids = mf_obs_grid_ids.set_index([3])
-
     mf_sim = pd.read_csv(
-                        'MODFLOW/apexmf_out_MF_obs', skiprows=1, sep=r'\s+',
+                        'MODFLOW/amf_MODFLOW_obs_head', skiprows=1, sep=r'\s+',
                         names=col_names,
-                        usecols=grid_ids,
+                        # usecols=grid_ids,
                         )
+    mf_sim = mf_sim.loc[:, grid_ids]
     mf_sim.index = pd.date_range(start_day, periods=len(mf_sim))
     mf_sim = mf_sim[start_day:end_day]
     for i in grid_ids:
         elev = mf_obs_grid_ids.loc[i].values  # use land surface elevation to get depth to water
-
-
         (mf_sim.loc[:, i] - elev).to_csv(
         # abs(elev - mf_sim.loc[:, i]).to_csv(
                         'dtw_{}.txt'.format(i), sep='\t', encoding='utf-8',

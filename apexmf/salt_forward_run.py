@@ -1,9 +1,15 @@
 import os
 from datetime import datetime
 import pandas as pd
+import pyemu
+import sys
+
+sys.path.insert(1, 'd:/spark-brc_gits/apexmf_git/')
+
 from apexmf import apexmf_pst_par, apexmf_utils
 from apexmf import apexmf_pst_utils
-import pyemu
+
+
 
 wd = os.getcwd()
 os.chdir(wd)

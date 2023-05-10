@@ -775,8 +775,8 @@ def cvt_salt_grid_sub_pp():
 
 def update_salt_input():
     nlines = get_salt_nlines()
-    sub_con_df = cvt_salt_grid_sub()
-    # sub_con_df = cvt_salt_grid_sub_pp()
+    # sub_con_df = cvt_salt_grid_sub()
+    sub_con_df = cvt_salt_grid_sub_pp()
     # for filename in glob.glob("MODFLOW"+"/*.btn"):
     with open('SALINITY/salt_input.org', "r") as f:
         data = f.readlines()

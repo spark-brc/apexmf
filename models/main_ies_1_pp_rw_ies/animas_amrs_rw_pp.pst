@@ -1,0 +1,22 @@
+pcf version=2
+* control data keyword
+pestmode                                 estimation
+noptmax                                 7
+svdmode                                 1
+maxsing                          10000000
+eigthresh                           1e-06
+eigwrite                                1
+ies_num_reals                  300
+ies_bad_phi_sigma              2.0
+* parameter groups external
+animas_amrs.pargp_data.csv
+* parameter data external
+animas_amrs.par_data.csv
+* observation data external
+animas_amrs.obs_data_rw.csv
+* model command line
+python salt_forward_run.py
+* model input external
+animas_amrs.tplfile_data.csv
+* model output external
+animas_amrs.insfile_data.csv

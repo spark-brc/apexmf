@@ -1,0 +1,12 @@
+# UPW: Upstream Weighting package file created on 1/27/2021 by ModelMuse version 4.2.0.0.
+     0 -1.000000000000E+020      0     0 # Data Set 1, IUPWCB HDRY NPUPW IPHDRY
+     1 # LAYTYP
+     0 # LAYAVG
+    -1 # CHANI
+     1 # LAYVKA
+     0 # LAYWET
+OPEN/CLOSE   MODFLOW\hk0pp.dat.ref	1     (FREE) 1 hk layer 1
+CONSTANT     1.000000000000E+000  # HANI Upper Aquifer Layer 1
+CONSTANT     1.000000000000E+001  # VKA Upper Aquifer Layer 1
+CONSTANT     1.000000000000E-005  # SS Upper Aquifer Layer 1
+OPEN/CLOSE   MODFLOW\sy0pp.dat.ref	1     (FREE) 1 sy

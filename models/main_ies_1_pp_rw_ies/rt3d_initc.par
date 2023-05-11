@@ -1,0 +1,12 @@
+# rt3d_initc.par file was created by the 'apexmf' python package.
+NAME   CHG_TYPE    VAL
+init_cno3             pctchg                0.0001               
+init_p                pctchg                0.0001               
+init_so4              pctchg                0.0001               
+init_ca               pctchg                0.0001               
+init_mg               pctchg                0.0001               
+init_na               pctchg                0.0001               
+init_k                pctchg                0.0001               
+init_cl               pctchg                0.0001               
+init_co3              pctchg                0.0001               
+init_hco3             pctchg                0.0001               

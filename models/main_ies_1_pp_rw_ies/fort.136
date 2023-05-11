@@ -1,0 +1,474 @@
+
+         SOIL WATER BALANCE(m3)  SA#=        1 ID=       69
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         P BALANCE (kg)  SA#=        1 ID=       69  PER =-0.132037E+02
+
+         SOIL WATER BALANCE(m3)  SA#=        2 ID=       65
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         P BALANCE (kg)  SA#=        2 ID=       65  PER =-0.122774E+02
+
+         SOIL WATER BALANCE(m3)  SA#=        3 ID=       59
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        3 ID=       59  PER = 0.205064E+02
+
+         P BALANCE (kg)  SA#=        3 ID=       59  PER =-0.306499E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        4 ID=       54
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        4 ID=       54  PER = 0.145024E+02
+
+         P BALANCE (kg)  SA#=        4 ID=       54  PER =-0.301479E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        5 ID=       45
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        5 ID=       45  PER = 0.151105E+02
+
+         P BALANCE (kg)  SA#=        5 ID=       45  PER =-0.595426E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        6 ID=       44
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        6 ID=       44  PER = 0.153327E+02
+
+         P BALANCE (kg)  SA#=        6 ID=       44  PER =-0.343053E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        7 ID=       52
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        7 ID=       52  PER = 0.103891E+02
+
+         P BALANCE (kg)  SA#=        7 ID=       52  PER =-0.144974E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        8 ID=       53
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        8 ID=       53  PER = 0.921790E+01
+
+         P BALANCE (kg)  SA#=        8 ID=       53  PER =-0.113969E+03
+
+         SOIL WATER BALANCE(m3)  SA#=        9 ID=       49
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=        9 ID=       49  PER = 0.991663E+01
+
+         P BALANCE (kg)  SA#=        9 ID=       49  PER =-0.132825E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       10 ID=       56
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       10 ID=       56  PER = 0.885617E+01
+
+         P BALANCE (kg)  SA#=       10 ID=       56  PER =-0.109472E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       11 ID=       40
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       11 ID=       40  PER = 0.122656E+02
+
+         P BALANCE (kg)  SA#=       11 ID=       40  PER =-0.521327E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       12 ID=       37
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       12 ID=       37  PER = 0.103265E+02
+
+         P BALANCE (kg)  SA#=       12 ID=       37  PER =-0.654282E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       13 ID=       43
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       13 ID=       43  PER = 0.154439E+02
+
+         P BALANCE (kg)  SA#=       13 ID=       43  PER =-0.516691E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       14 ID=       34
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       14 ID=       34  PER = 0.528661E+01
+
+         P BALANCE (kg)  SA#=       14 ID=       34  PER =-0.777368E+02
+
+         SOIL WATER BALANCE(m3)  SA#=       15 ID=       27
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       15 ID=       27  PER = 0.781956E+01
+
+         P BALANCE (kg)  SA#=       15 ID=       27  PER =-0.165033E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       16 ID=       20
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       16 ID=       20  PER = 0.499379E+01
+
+         P BALANCE (kg)  SA#=       16 ID=       20  PER =-0.390671E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       17 ID=       14
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       17 ID=       14  PER =-0.127072E+02
+
+         P BALANCE (kg)  SA#=       17 ID=       14  PER =-0.385096E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       18 ID=        6
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       18 ID=        6  PER = 0.426730E+01
+
+         P BALANCE (kg)  SA#=       18 ID=        6  PER =-0.290684E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       19 ID=        1
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       19 ID=        1  PER = 0.800694E+01
+
+         P BALANCE (kg)  SA#=       19 ID=        1  PER =-0.364146E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       20 ID=        9
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       20 ID=        9  PER = 0.122279E+02
+
+         P BALANCE (kg)  SA#=       20 ID=        9  PER =-0.256748E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       21 ID=        3
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       21 ID=        3  PER = 0.411261E+01
+
+         P BALANCE (kg)  SA#=       21 ID=        3  PER =-0.125602E+03
+
+         N BALANCE (kg)  SA#=       22 ID=        4  PER = 0.125296E+02
+
+         P BALANCE (kg)  SA#=       22 ID=        4  PER =-0.286686E+03
+
+         N BALANCE (kg)  SA#=       23 ID=        8  PER =-0.199026E+02
+
+         N BALANCE (kg)  SA#=       24 ID=       11  PER = 0.205216E+01
+
+         P BALANCE (kg)  SA#=       24 ID=       11  PER =-0.163935E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       25 ID=        5
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       25 ID=        5  PER = 0.116277E+02
+
+         P BALANCE (kg)  SA#=       25 ID=        5  PER =-0.145413E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       26 ID=        2
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       26 ID=        2  PER = 0.198251E+01
+
+         P BALANCE (kg)  SA#=       26 ID=        2  PER =-0.646561E+02
+
+         SOIL WATER BALANCE(m3)  SA#=       27 ID=        7
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       27 ID=        7  PER = 0.336761E+01
+
+         P BALANCE (kg)  SA#=       27 ID=        7  PER =-0.122004E+03
+
+         N BALANCE (kg)  SA#=       28 ID=       10  PER = 0.760425E+01
+
+         P BALANCE (kg)  SA#=       28 ID=       10  PER =-0.975369E+03
+
+         N BALANCE (kg)  SA#=       29 ID=       12  PER = 0.100605E+02
+
+         P BALANCE (kg)  SA#=       29 ID=       12  PER =-0.132663E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       30 ID=       13
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       30 ID=       13  PER = 0.109346E+02
+
+         P BALANCE (kg)  SA#=       30 ID=       13  PER =-0.254174E+04
+
+         N BALANCE (kg)  SA#=       31 ID=       19  PER = 0.157342E+02
+
+         P BALANCE (kg)  SA#=       31 ID=       19  PER =-0.177565E+04
+
+         N BALANCE (kg)  SA#=       32 ID=       23  PER = 0.697724E+01
+
+         P BALANCE (kg)  SA#=       32 ID=       23  PER =-0.344297E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       33 ID=       18
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       33 ID=       18  PER = 0.976086E+01
+
+         P BALANCE (kg)  SA#=       33 ID=       18  PER =-0.178351E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       34 ID=       17
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       34 ID=       17  PER = 0.101423E+02
+
+         P BALANCE (kg)  SA#=       34 ID=       17  PER =-0.169199E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       35 ID=       21
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       35 ID=       21  PER = 0.151319E+02
+
+         P BALANCE (kg)  SA#=       35 ID=       21  PER =-0.301829E+04
+
+         N BALANCE (kg)  SA#=       36 ID=       22  PER =-0.302041E+00
+
+         P BALANCE (kg)  SA#=       36 ID=       22  PER = 0.520043E+02
+
+         SOIL WATER BALANCE(m3)  SA#=       37 ID=       25
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       37 ID=       25  PER = 0.142241E+02
+
+         P BALANCE (kg)  SA#=       37 ID=       25  PER =-0.212405E+04
+
+         N BALANCE (kg)  SA#=       38 ID=       31  PER = 0.232784E+02
+
+         P BALANCE (kg)  SA#=       38 ID=       31  PER =-0.845407E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       39 ID=       30
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       39 ID=       30  PER = 0.135983E+02
+
+         P BALANCE (kg)  SA#=       39 ID=       30  PER =-0.341079E+03
+
+         N BALANCE (kg)  SA#=       40 ID=       33  PER = 0.130340E+02
+
+         P BALANCE (kg)  SA#=       40 ID=       33  PER =-0.334758E+03
+
+         N BALANCE (kg)  SA#=       41 ID=       36  PER = 0.129662E+02
+
+         P BALANCE (kg)  SA#=       41 ID=       36  PER =-0.175079E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       42 ID=       26
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       42 ID=       26  PER = 0.819110E+01
+
+         P BALANCE (kg)  SA#=       42 ID=       26  PER =-0.309828E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       43 ID=       16
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       43 ID=       16  PER = 0.108948E+02
+
+         P BALANCE (kg)  SA#=       43 ID=       16  PER =-0.159946E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       44 ID=       15
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       44 ID=       15  PER = 0.102156E+02
+
+         P BALANCE (kg)  SA#=       44 ID=       15  PER =-0.134003E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       45 ID=       24
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       45 ID=       24  PER = 0.904875E+01
+
+         P BALANCE (kg)  SA#=       45 ID=       24  PER =-0.133275E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       46 ID=       29
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       46 ID=       29  PER = 0.105345E+02
+
+         P BALANCE (kg)  SA#=       46 ID=       29  PER =-0.193192E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       47 ID=       28
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       47 ID=       28  PER = 0.114199E+02
+
+         P BALANCE (kg)  SA#=       47 ID=       28  PER =-0.149989E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       48 ID=       32
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       48 ID=       32  PER = 0.102108E+02
+
+         P BALANCE (kg)  SA#=       48 ID=       32  PER =-0.806308E+03
+
+         N BALANCE (kg)  SA#=       49 ID=       35  PER =-0.961672E+00
+
+         P BALANCE (kg)  SA#=       49 ID=       35  PER =-0.176835E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       50 ID=       39
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       50 ID=       39  PER = 0.202804E+02
+
+         P BALANCE (kg)  SA#=       50 ID=       39  PER =-0.541737E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       51 ID=       38
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       51 ID=       38  PER = 0.118081E+02
+
+         P BALANCE (kg)  SA#=       51 ID=       38  PER =-0.185054E+03
+
+         N BALANCE (kg)  SA#=       52 ID=       41  PER = 0.140777E+02
+
+         P BALANCE (kg)  SA#=       52 ID=       41  PER =-0.134382E+04
+
+         N BALANCE (kg)  SA#=       54 ID=       46  PER = 0.358292E+02
+
+         P BALANCE (kg)  SA#=       54 ID=       46  PER =-0.416712E+04
+
+         N BALANCE (kg)  SA#=       55 ID=       48  PER = 0.210242E+02
+
+         P BALANCE (kg)  SA#=       55 ID=       48  PER =-0.182858E+04
+
+         SOIL WATER BALANCE(m3)  SA#=       56 ID=       47
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       56 ID=       47  PER = 0.125056E+02
+
+         P BALANCE (kg)  SA#=       56 ID=       47  PER =-0.374324E+03
+
+         N BALANCE (kg)  SA#=       57 ID=       51  PER = 0.132147E+02
+
+         P BALANCE (kg)  SA#=       57 ID=       51  PER =-0.319967E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       58 ID=       50
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       58 ID=       50  PER = 0.146048E+02
+
+         P BALANCE (kg)  SA#=       58 ID=       50  PER =-0.774694E+03
+
+         N BALANCE (kg)  SA#=       59 ID=       55  PER = 0.950706E+01
+
+         P BALANCE (kg)  SA#=       59 ID=       55  PER =-0.124482E+03
+
+         N BALANCE (kg)  SA#=       60 ID=       57  PER = 0.204525E+02
+
+         P BALANCE (kg)  SA#=       60 ID=       57  PER =-0.633396E+03
+
+         N BALANCE (kg)  SA#=       61 ID=       58  PER = 0.190502E+02
+
+         P BALANCE (kg)  SA#=       61 ID=       58  PER =-0.131077E+03
+
+         P BALANCE (kg)  SA#=       62 ID=       64  PER =-0.119692E+02
+
+         N BALANCE (kg)  SA#=       63 ID=       63  PER = 0.321525E+02
+
+         P BALANCE (kg)  SA#=       63 ID=       63  PER =-0.105050E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       64 ID=       61
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       64 ID=       61  PER = 0.210706E+02
+
+         P BALANCE (kg)  SA#=       64 ID=       61  PER =-0.629898E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       65 ID=       60
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       65 ID=       60  PER =-0.139371E+00
+
+         P BALANCE (kg)  SA#=       65 ID=       60  PER =-0.147301E+02
+
+         SOIL WATER BALANCE(m3)  SA#=       66 ID=       62
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       66 ID=       62  PER = 0.286604E+02
+
+         P BALANCE (kg)  SA#=       66 ID=       62  PER =-0.306431E+03
+
+         N BALANCE (kg)  SA#=       67 ID=       67  PER = 0.152854E+02
+
+         P BALANCE (kg)  SA#=       67 ID=       67  PER =-0.102325E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       68 ID=       66
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       68 ID=       66  PER = 0.210862E+02
+
+         P BALANCE (kg)  SA#=       68 ID=       66  PER =-0.875645E+03
+
+         N BALANCE (kg)  SA#=       69 ID=       68  PER = 0.198025E+02
+
+         P BALANCE (kg)  SA#=       69 ID=       68  PER =-0.108983E+03
+
+         N BALANCE (kg)  SA#=       70 ID=       71  PER = 0.234633E+02
+
+         P BALANCE (kg)  SA#=       70 ID=       71  PER =-0.171222E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       71 ID=       70
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       71 ID=       70  PER = 0.566847E+00
+
+         P BALANCE (kg)  SA#=       71 ID=       70  PER =-0.137916E+03
+
+         P BALANCE (kg)  SA#=       72 ID=       72  PER =-0.775002E+02
+
+         N BALANCE (kg)  SA#=       73 ID=       74  PER = 0.611052E+01
+
+         P BALANCE (kg)  SA#=       73 ID=       74  PER =-0.135859E+03
+
+         SOIL WATER BALANCE(m3)  SA#=       74 ID=       73
+
+         SOIL WATER BALANCE(m3)  SA#= ******** ID= 
+
+         N BALANCE (kg)  SA#=       74 ID=       73  PER = 0.601313E+01
+
+         P BALANCE (kg)  SA#=       74 ID=       73  PER =-0.102004E+03
+
+         N BALANCE (kg)  SA#=       75 ID=       75  PER = 0.299436E+02
+
+         P BALANCE (kg)  SA#=       75 ID=       75  PER =-0.199733E+03

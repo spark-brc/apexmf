@@ -1,0 +1,18 @@
+time,elapsed_seconds,message
+15:31:50,7.54e-05,PEST++ performance logger started
+15:31:50,0.0004241,starting to process control file
+15:31:50,0.071447,finished processing control file
+15:31:51,0.027768,starting basic model IO error checking
+15:31:51,0.46895,finished basic model IO error checking
+15:31:51,0.0053883,initializing
+15:31:51,0.0003991,'noptmax'=0, running control file parameter values and quitting
+15:31:51,0.0001675,saving control file parameter ensemble to  animas_amrs.base.par.csv
+15:31:51,0.003105,initializing prior parameter covariance matrix
+15:31:51,9.2e-06,initializing parcov
+15:31:51,0.0003674,parcov loaded  from parameter bounds, using par_sigma_range 4
+15:31:51,0.0023233,running control file parameter values
+15:31:51,2.42e-05,queuing 1 runs
+15:31:51,0.0042872,making runs
+15:39:08,437.446,processing runs
+15:39:08,0.0023606,saving results from control file parameter value run to  animas_amrs.base.obs.csv
+15:39:08,0.0289695,control file parameter phi report:

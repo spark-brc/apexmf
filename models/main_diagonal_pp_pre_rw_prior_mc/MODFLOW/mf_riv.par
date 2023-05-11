@@ -1,0 +1,12 @@
+# modflow_par template file.
+NAME   CHG_TYPE    VAL
+ rivcd_rg01             pctchg                            -2.162571E+01
+ rivcd_rg02             pctchg                             3.595025E+01
+ rivcd_rg03             pctchg                            -1.591401E+01
+ rivcd_rg04             pctchg                            -5.650763E+00
+ rivcd_rg05             pctchg                            -2.958945E+01
+ rivbot_rg01            unfchg                             0.000000E+00
+ rivbot_rg02            unfchg                             0.000000E+00
+ rivbot_rg03            unfchg                             0.000000E+00
+ rivbot_rg04            unfchg                             0.000000E+00
+ rivbot_rg05            unfchg                             0.000000E+00

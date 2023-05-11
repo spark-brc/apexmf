@@ -1,0 +1,14 @@
+pargpnme,inctyp,derinc,derinclb,forcen,derincmul,dermthd,splitthresh,splitreldiff,splitaction
+soil,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+aquf,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+apex,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+rivbot,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+rivcd,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_ca0,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_cl0,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_co30,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_hco30,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_k0,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_mg0,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_na0,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller
+salt_so40,relative,1.00E-02,0,switch,2.00E+00,parabolic,1.00E-05,5.00E-01,smaller

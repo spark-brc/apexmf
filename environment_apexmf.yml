@@ -13,7 +13,7 @@ dependencies:
   - flopy
   - scipy
   - pip:
-      - pyemu
-      - tqdm
-      - hydroeval
-      - termcolor
+    - pyemu
+    - tqdm
+    - hydroeval
+    - termcolor

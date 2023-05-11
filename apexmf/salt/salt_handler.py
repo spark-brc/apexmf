@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
-from utils import ObjFns
+from apexmf.utils import ObjFns
 import matplotlib.pyplot as plt
 # import ObjFns
 

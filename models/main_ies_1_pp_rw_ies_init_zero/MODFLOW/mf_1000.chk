@@ -1,0 +1,6 @@
+type,package,k,i,j,value,desc
+Error,DIS,0,7,55,0.939941,thin cells (less than checker threshold of 1.0)
+Warning,OC,0,0,0,0.000000,action(s) defined in OC stress_period_data ignored as they are not part the stress periods defined by DIS
+Warning,GHB,0,0,130,0.000000,BC in inactive cell
+Warning,GHB,129,0,4,0.000000,BC in inactive cell
+Warning,RIV,0,130,0,0.000000,BC in inactive cell

@@ -1,0 +1,8 @@
+'MODFLOW/EM_Animas_RBF.btn'		INBTN=1			Basic Transport Package
+'MODFLOW/EM_animas.adv'			INADV=2			Advection Package
+'MODFLOW/EM_Animas.dsp'			INDSP=3			Dispersion Package
+'MODFLOW/EM_Animas.ssm'			INSSM=4			Source/Sink Mixing Package
+'MODFLOW/EM_Animas.rct'			INRCT=5			Reaction Package
+'MODFLOW/EM_Animas.gcg'			INGCG=6			Implicit Solver Package
+'MODFLOW/EM_Animas.restart'		OUTRES=8		Restart File
+'MODFLOW/EM_Animas.salt'		INSALT=10		Salt Package

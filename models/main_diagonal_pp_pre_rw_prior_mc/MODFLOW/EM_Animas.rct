@@ -1,0 +1,28 @@
+'ISOTHM,IREACT,NCRXNDATA,NVRXNDATA,ISOLVER,IRCTOP -----------------------------'
+1 10 2 0 1 0
+Bulk density
+0 1.855
+Sorption parameters
+0 0.0				partition coefficient for NO3  (linear sorption)
+0 3.5				partition coefficient for PO4  (linear sorption)
+0 0.0				partition coefficient for SO4  (linear sorption)
+0 0.0				partition coefficient for Ca   (linear sorption)
+0 0.0				partition coefficient for Mg   (linear sorption)
+0 0.0				partition coefficient for Na   (linear sorption)
+0 0.0				partition coefficient for K    (linear sorption)
+0 0.0				partition coefficient for Cl   (linear sorption)
+0 0.0				partition coefficient for CO3  (linear sorption)
+0 0.0				partition coefficient for HCO3 (linear sorption)
+0 0.0				second parameter for NO3  (not used for linear sorption)
+0 0.0				second parameter for PO4  (not used for linear sorption)
+0 0.0				second parameter for SO4  (not used for linear sorption)
+0 0.0				second parameter for Ca   (not used for linear sorption)
+0 0.0				second parameter for Mg   (not used for linear sorption)
+0 0.0				second parameter for Na   (not used for linear sorption)
+0 0.0				second parameter for K    (not used for linear sorption)
+0 0.0				second parameter for Cl   (not used for linear sorption)
+0 0.0				second parameter for CO3  (not used for linear sorption)
+0 0.0				second parameter for HCO3 (not used for linear sorption)
+Spatially Constant Values for reaction rates
+0.10     			kden
+10.00				kno3

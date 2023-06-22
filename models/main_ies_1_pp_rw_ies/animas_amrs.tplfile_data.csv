@@ -1,0 +1,13 @@
+pest_file,model_file
+MODFLOW\EM_Animas.salt.tpl,MODFLOW\EM_Animas.salt
+SALINITY\salt_input.tpl,SALINITY\salt_input
+MODFLOW\mf_riv.par.tpl,MODFLOW\mf_riv.par
+PARM1501.DAT.tpl,PARM1501.DAT
+MODFLOW\salt_ca0pp.dat.tpl,MODFLOW\salt_ca0pp.dat
+MODFLOW\salt_cl0pp.dat.tpl,MODFLOW\salt_cl0pp.dat
+MODFLOW\salt_co30pp.dat.tpl,MODFLOW\salt_co30pp.dat
+MODFLOW\salt_hco30pp.dat.tpl,MODFLOW\salt_hco30pp.dat
+MODFLOW\salt_k0pp.dat.tpl,MODFLOW\salt_k0pp.dat
+MODFLOW\salt_mg0pp.dat.tpl,MODFLOW\salt_mg0pp.dat
+MODFLOW\salt_na0pp.dat.tpl,MODFLOW\salt_na0pp.dat
+MODFLOW\salt_so40pp.dat.tpl,MODFLOW\salt_so40pp.dat

@@ -1,0 +1,184 @@
+2022-07-14 14:08:16.772068 starting: opening plot_pst_helper.log for logging
+2022-07-14 14:08:16.772068 plot_utils.pst_helper()
+2022-07-14 14:08:16.772068 starting: plot res_1to1
+2022-07-14 14:08:16.772068 starting: plotting 1to1 for d009_cca
+2022-07-14 14:08:16.772068 using control file obsvals to calculate residuals
+2022-07-14 14:08:16.919259 finished: plotting 1to1 for d009_cca took: 0:00:00.147191
+2022-07-14 14:08:16.919259 starting: plotting 1to1 for d009_ck
+2022-07-14 14:08:16.919259 using control file obsvals to calculate residuals
+2022-07-14 14:08:16.934884 finished: plotting 1to1 for d009_ck took: 0:00:00.015625
+2022-07-14 14:08:16.934884 starting: plotting 1to1 for d009_cmg
+2022-07-14 14:08:16.934884 using control file obsvals to calculate residuals
+2022-07-14 14:08:16.941425 finished: plotting 1to1 for d009_cmg took: 0:00:00.006541
+2022-07-14 14:08:16.941425 starting: plotting 1to1 for d009_cna
+2022-07-14 14:08:16.941425 using control file obsvals to calculate residuals
+2022-07-14 14:08:16.957087 finished: plotting 1to1 for d009_cna took: 0:00:00.015662
+2022-07-14 14:08:16.957087 starting: plotting 1to1 for d009_cso4
+2022-07-14 14:08:16.957087 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.220232 finished: plotting 1to1 for d009_cso4 took: 0:00:00.263145
+2022-07-14 14:08:17.220232 starting: plotting 1to1 for d009_lca
+2022-07-14 14:08:17.235856 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.242480 finished: plotting 1to1 for d009_lca took: 0:00:00.022248
+2022-07-14 14:08:17.242480 starting: plotting 1to1 for d009_lk
+2022-07-14 14:08:17.244571 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.244571 finished: plotting 1to1 for d009_lk took: 0:00:00.002091
+2022-07-14 14:08:17.244571 starting: plotting 1to1 for d009_lmg
+2022-07-14 14:08:17.252702 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.254801 finished: plotting 1to1 for d009_lmg took: 0:00:00.010230
+2022-07-14 14:08:17.254801 starting: plotting 1to1 for d009_lna
+2022-07-14 14:08:17.254801 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.506160 finished: plotting 1to1 for d009_lna took: 0:00:00.251359
+2022-07-14 14:08:17.506160 starting: plotting 1to1 for d009_lso4
+2022-07-14 14:08:17.506160 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.508277 finished: plotting 1to1 for d009_lso4 took: 0:00:00.002117
+2022-07-14 14:08:17.508277 starting: plotting 1to1 for d012_cca
+2022-07-14 14:08:17.508277 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.518509 finished: plotting 1to1 for d012_cca took: 0:00:00.010232
+2022-07-14 14:08:17.518509 starting: plotting 1to1 for d012_ccl
+2022-07-14 14:08:17.518509 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.528738 finished: plotting 1to1 for d012_ccl took: 0:00:00.010229
+2022-07-14 14:08:17.528738 starting: plotting 1to1 for d012_chco3
+2022-07-14 14:08:17.528738 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.839440 finished: plotting 1to1 for d012_chco3 took: 0:00:00.310702
+2022-07-14 14:08:17.839440 starting: plotting 1to1 for d012_ck
+2022-07-14 14:08:17.839440 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.841526 finished: plotting 1to1 for d012_ck took: 0:00:00.002086
+2022-07-14 14:08:17.841526 starting: plotting 1to1 for d012_cmg
+2022-07-14 14:08:17.841526 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.851739 finished: plotting 1to1 for d012_cmg took: 0:00:00.010213
+2022-07-14 14:08:17.851739 starting: plotting 1to1 for d012_cna
+2022-07-14 14:08:17.851739 using control file obsvals to calculate residuals
+2022-07-14 14:08:17.861935 finished: plotting 1to1 for d012_cna took: 0:00:00.010196
+2022-07-14 14:08:17.861935 starting: plotting 1to1 for d012_cso4
+2022-07-14 14:08:17.861935 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.134756 finished: plotting 1to1 for d012_cso4 took: 0:00:00.272821
+2022-07-14 14:08:18.134756 starting: plotting 1to1 for d012_lca
+2022-07-14 14:08:18.136868 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.144978 finished: plotting 1to1 for d012_lca took: 0:00:00.010222
+2022-07-14 14:08:18.144978 starting: plotting 1to1 for d012_lcl
+2022-07-14 14:08:18.144978 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.147112 finished: plotting 1to1 for d012_lcl took: 0:00:00.002134
+2022-07-14 14:08:18.147112 starting: plotting 1to1 for d012_lhco3
+2022-07-14 14:08:18.147112 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.157338 finished: plotting 1to1 for d012_lhco3 took: 0:00:00.010226
+2022-07-14 14:08:18.157338 starting: plotting 1to1 for d012_lk
+2022-07-14 14:08:18.157338 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.422111 finished: plotting 1to1 for d012_lk took: 0:00:00.264773
+2022-07-14 14:08:18.422111 starting: plotting 1to1 for d012_lmg
+2022-07-14 14:08:18.422111 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.430209 finished: plotting 1to1 for d012_lmg took: 0:00:00.008098
+2022-07-14 14:08:18.430209 starting: plotting 1to1 for d012_lna
+2022-07-14 14:08:18.430209 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.440280 finished: plotting 1to1 for d012_lna took: 0:00:00.010071
+2022-07-14 14:08:18.440280 starting: plotting 1to1 for d012_lso4
+2022-07-14 14:08:18.440280 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.442389 finished: plotting 1to1 for d012_lso4 took: 0:00:00.002109
+2022-07-14 14:08:18.442389 starting: plotting 1to1 for d075_cca
+2022-07-14 14:08:18.442389 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.697648 finished: plotting 1to1 for d075_cca took: 0:00:00.255259
+2022-07-14 14:08:18.697648 starting: plotting 1to1 for d075_ccl
+2022-07-14 14:08:18.705747 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.707839 finished: plotting 1to1 for d075_ccl took: 0:00:00.010191
+2022-07-14 14:08:18.707839 starting: plotting 1to1 for d075_cco
+2022-07-14 14:08:18.707839 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.718044 finished: plotting 1to1 for d075_cco took: 0:00:00.010205
+2022-07-14 14:08:18.718044 starting: plotting 1to1 for d075_chco3
+2022-07-14 14:08:18.718044 using control file obsvals to calculate residuals
+2022-07-14 14:08:18.728233 finished: plotting 1to1 for d075_chco3 took: 0:00:00.010189
+2022-07-14 14:08:18.728233 starting: plotting 1to1 for d075_ck
+2022-07-14 14:08:18.728233 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.125856 finished: plotting 1to1 for d075_ck took: 0:00:00.397623
+2022-07-14 14:08:19.125856 starting: plotting 1to1 for d075_cmg
+2022-07-14 14:08:19.125856 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.136082 finished: plotting 1to1 for d075_cmg took: 0:00:00.010226
+2022-07-14 14:08:19.136082 starting: plotting 1to1 for d075_cna
+2022-07-14 14:08:19.136082 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.146228 finished: plotting 1to1 for d075_cna took: 0:00:00.010146
+2022-07-14 14:08:19.146282 starting: plotting 1to1 for d075_cso4
+2022-07-14 14:08:19.146282 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.154376 finished: plotting 1to1 for d075_cso4 took: 0:00:00.008094
+2022-07-14 14:08:19.154376 starting: plotting 1to1 for d075_lca
+2022-07-14 14:08:19.154376 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.399192 finished: plotting 1to1 for d075_lca took: 0:00:00.244816
+2022-07-14 14:08:19.399192 starting: plotting 1to1 for d075_lcl
+2022-07-14 14:08:19.401285 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.401285 finished: plotting 1to1 for d075_lcl took: 0:00:00.002093
+2022-07-14 14:08:19.401285 starting: plotting 1to1 for d075_lco
+2022-07-14 14:08:19.409384 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.411478 finished: plotting 1to1 for d075_lco took: 0:00:00.010193
+2022-07-14 14:08:19.411478 starting: plotting 1to1 for d075_lhco3
+2022-07-14 14:08:19.411478 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.421681 finished: plotting 1to1 for d075_lhco3 took: 0:00:00.010203
+2022-07-14 14:08:19.421681 starting: plotting 1to1 for d075_lk
+2022-07-14 14:08:19.421681 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.682015 finished: plotting 1to1 for d075_lk took: 0:00:00.260334
+2022-07-14 14:08:19.682015 starting: plotting 1to1 for d075_lmg
+2022-07-14 14:08:19.682015 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.697638 finished: plotting 1to1 for d075_lmg took: 0:00:00.015623
+2022-07-14 14:08:19.697638 starting: plotting 1to1 for d075_lna
+2022-07-14 14:08:19.697638 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.713263 finished: plotting 1to1 for d075_lna took: 0:00:00.015625
+2022-07-14 14:08:19.713263 starting: plotting 1to1 for d075_lso4
+2022-07-14 14:08:19.713263 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.713263 finished: plotting 1to1 for d075_lso4 took: 0:00:00
+2022-07-14 14:08:19.728887 starting: plotting 1to1 for m009_lca
+2022-07-14 14:08:19.728887 using control file obsvals to calculate residuals
+2022-07-14 14:08:19.994758 finished: plotting 1to1 for m009_lca took: 0:00:00.265871
+2022-07-14 14:08:19.994758 starting: plotting 1to1 for m009_lk
+2022-07-14 14:08:19.994758 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.002854 finished: plotting 1to1 for m009_lk took: 0:00:00.008096
+2022-07-14 14:08:20.002854 starting: plotting 1to1 for m009_lmg
+2022-07-14 14:08:20.002854 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.004932 finished: plotting 1to1 for m009_lmg took: 0:00:00.002078
+2022-07-14 14:08:20.004932 starting: plotting 1to1 for m009_lna
+2022-07-14 14:08:20.012971 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.015158 finished: plotting 1to1 for m009_lna took: 0:00:00.010226
+2022-07-14 14:08:20.015158 starting: plotting 1to1 for m009_lso4
+2022-07-14 14:08:20.015158 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.392846 finished: plotting 1to1 for m009_lso4 took: 0:00:00.377688
+2022-07-14 14:08:20.392846 starting: plotting 1to1 for m012_lca
+2022-07-14 14:08:20.392846 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.403065 finished: plotting 1to1 for m012_lca took: 0:00:00.010219
+2022-07-14 14:08:20.403065 starting: plotting 1to1 for m012_lcl
+2022-07-14 14:08:20.403065 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.413265 finished: plotting 1to1 for m012_lcl took: 0:00:00.010200
+2022-07-14 14:08:20.413265 starting: plotting 1to1 for m012_lhco3
+2022-07-14 14:08:20.413265 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.423496 finished: plotting 1to1 for m012_lhco3 took: 0:00:00.010231
+2022-07-14 14:08:20.423496 starting: plotting 1to1 for m012_lk
+2022-07-14 14:08:20.423496 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.678372 finished: plotting 1to1 for m012_lk took: 0:00:00.254876
+2022-07-14 14:08:20.678372 starting: plotting 1to1 for m012_lmg
+2022-07-14 14:08:20.678372 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.688586 finished: plotting 1to1 for m012_lmg took: 0:00:00.010214
+2022-07-14 14:08:20.688586 starting: plotting 1to1 for m012_lna
+2022-07-14 14:08:20.688586 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.698784 finished: plotting 1to1 for m012_lna took: 0:00:00.010198
+2022-07-14 14:08:20.698784 starting: plotting 1to1 for m012_lso4
+2022-07-14 14:08:20.698784 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.708989 finished: plotting 1to1 for m012_lso4 took: 0:00:00.010205
+2022-07-14 14:08:20.708989 starting: plotting 1to1 for m075_lca
+2022-07-14 14:08:20.708989 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.954186 finished: plotting 1to1 for m075_lca took: 0:00:00.245197
+2022-07-14 14:08:20.954186 starting: plotting 1to1 for m075_lcl
+2022-07-14 14:08:20.954186 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.962309 finished: plotting 1to1 for m075_lcl took: 0:00:00.008123
+2022-07-14 14:08:20.962309 starting: plotting 1to1 for m075_lco
+2022-07-14 14:08:20.962309 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.964424 finished: plotting 1to1 for m075_lco took: 0:00:00.002115
+2022-07-14 14:08:20.964424 starting: plotting 1to1 for m075_lhco3
+2022-07-14 14:08:20.972537 using control file obsvals to calculate residuals
+2022-07-14 14:08:20.974648 finished: plotting 1to1 for m075_lhco3 took: 0:00:00.010224
+2022-07-14 14:08:20.974648 starting: plotting 1to1 for m075_lk
+2022-07-14 14:08:20.974648 using control file obsvals to calculate residuals
+2022-07-14 14:08:21.258411 finished: plotting 1to1 for m075_lk took: 0:00:00.283763
+2022-07-14 14:08:21.258411 starting: plotting 1to1 for m075_lmg
+2022-07-14 14:08:21.260518 using control file obsvals to calculate residuals
+2022-07-14 14:08:21.270726 finished: plotting 1to1 for m075_lmg took: 0:00:00.012315
+2022-07-14 14:08:21.270726 starting: plotting 1to1 for m075_lna
+2022-07-14 14:08:21.270726 using control file obsvals to calculate residuals
+2022-07-14 14:08:21.280924 finished: plotting 1to1 for m075_lna took: 0:00:00.010198
+2022-07-14 14:08:21.280924 starting: plotting 1to1 for m075_lso4
+2022-07-14 14:08:21.280924 using control file obsvals to calculate residuals
+2022-07-14 14:08:21.291102 finished: plotting 1to1 for m075_lso4 took: 0:00:00.010178
+2022-07-14 14:08:21.454398 finished: plot res_1to1 took: 0:00:04.682330

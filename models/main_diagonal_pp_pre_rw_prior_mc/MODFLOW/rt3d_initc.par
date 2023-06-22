@@ -1,0 +1,12 @@
+# RT3D Init. Conc. template file.
+NAME   CHG_TYPE    VAL
+init_cno3             pctchg                 1.00000000003319656e-04 
+init_p                pctchg                 1.00000000003319656e-04 
+init_so4              pctchg                 1.00000000003319656e-04 
+init_ca               pctchg                 1.00000000003319656e-04 
+init_mg               pctchg                 1.00000000003319656e-04 
+init_na               pctchg                 1.00000000003319656e-04 
+init_k                pctchg                 1.00000000003319656e-04 
+init_cl               pctchg                 1.00000000003319656e-04 
+init_co3              pctchg                 1.00000000003319656e-04 
+init_hco3             pctchg                 1.00000000003319656e-04 

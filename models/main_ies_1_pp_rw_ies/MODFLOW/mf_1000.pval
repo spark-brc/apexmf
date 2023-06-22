@@ -1,0 +1,12 @@
+#pval template file from pyemu
+        10 #NP
+ hk01                              0.18
+ hk02                              0.5
+ hk03                              1
+ hk04                              5
+ hk05                              5
+ sy01                              0.03
+ sy02                              0.02
+ sy03                              0.3
+ sy04                              0.05
+ sy05                              0.05

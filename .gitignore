@@ -1,8 +1,0 @@
-.git
-.ipynb_checkpoints
-.pytest_cache
-.vscode
-apexmf.egg-info
-build
-dist
-.trash/

@@ -25,6 +25,19 @@ class SaltAnalysis(object):
                             )
         salt_df = salt_df.iloc[:, 5:] # only cols we need
         return salt_df
+    
+    def load_salt_budget_result(self):
+        if not os.path.exists('SALINITY/salt.output.budget_subarea'):
+            raise Exception("'salt.output.budget_subarea' file not found")
+        salt_df = pd.read_csv(
+                            "SALINITY/salt.output.budget_subarea",
+                            delim_whitespace=True,
+                            skiprows=3,
+                            header=0,
+                            index_col=0,
+                            )
+        # salt_df = salt_df.iloc[:, 5:] # only cols we need
+        return salt_df        
 
     def read_salt_sim_cha(self, df, sub_id, sim_start, cal_start, cal_end=None):
         salt_df = df.loc[sub_id]

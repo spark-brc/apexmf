@@ -224,6 +224,7 @@ def extract_month_stf(rch_file, channels, start_day, cali_start_day, cali_end_da
         sim_stf_f.to_csv('stf_{:03d}.txt'.format(i), sep='\t', encoding='utf-8', index=True, header=False, float_format='%.7e')
         print('stf_{:03d}.txt file has been created...'.format(i))
     print('Finished ...')
+    return sim_stf_f
 
 
 # extract sed

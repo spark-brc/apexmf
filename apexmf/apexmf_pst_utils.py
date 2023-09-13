@@ -989,7 +989,8 @@ def modify_mf_tpl_path(pst_model_input):
             pst_model_input.iloc[i, 0][:2] == 'hk' or 
             pst_model_input.iloc[i, 0][:2] == 'sy' or
             pst_model_input.iloc[i, 0][:2] == 'mf' or
-            pst_model_input.iloc[i, 0][:2] == 'rt'
+            pst_model_input.iloc[i, 0][:2] == 'rt' or
+            pst_model_input.iloc[i, 0][:4] == 'salt'
             ):
             pst_model_input.iloc[i, 0] =  "MODFLOW" +'\\'+ pst_model_input.iloc[i, 0]
             pst_model_input.iloc[i, 1] =  "MODFLOW" +'\\'+ pst_model_input.iloc[i, 1]

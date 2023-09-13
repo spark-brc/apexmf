@@ -767,7 +767,9 @@ def cvt_salt_grid_sub_pp():
             [salt_inits.set_index('grid_id'),temp_df.set_index('grid_id')], 
             axis=1, join='inner'
             ).mean(axis=0)
-        sub_con_df["sub{:03d}".format(i)] = temp_df2
+        temp_df2.columns = "sub{:03d}".format(i)
+        sub_con_df = pd.concat([sub_con_df, temp_df2], axis=1)
+        # sub_con_df["sub{:03d}".format(i)] = temp_df2
     sub_con_dff = sub_con_df.T[ions]
     print('Updated gridded init salt ions have been converted to sub scales ...')
     return sub_con_dff

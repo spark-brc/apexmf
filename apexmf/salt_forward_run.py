@@ -37,6 +37,7 @@ def modify_hk_sy_pars_pp(pp_included):
         pyemu.utils.geostats.fac2real(i, factors_file=i+'.fac', out_file=outfile)
     os.chdir(wd)
 
+# NOTE: you got to make co3 and hco3 too although you don't have
 def modify_salt_pars_pp():
     mf_wd = wd + "\MODFLOW"
     os.chdir(mf_wd)

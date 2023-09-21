@@ -11,7 +11,6 @@ class SaltAnalysis(object):
     def __init__(self, wd):
         os.chdir(wd)
 
-
     def load_salt_cha_result(self):
         if not os.path.exists('SALINITY/salt.output.channels'):
             raise Exception("'salt.output.channels' file not found")

@@ -13,6 +13,32 @@ class SaltAnalysis(object):
     def __init__(self, wd):
         os.chdir(wd)
 
+
+    def load_salt_outlet_result(self):
+        if not os.path.exists('SALINITY/salt.output.outlet'):
+            raise Exception("'salt.output.outlet' file not found")
+        salt_df = pd.read_csv(
+                            "SALINITY/salt.output.outlet",
+                            delim_whitespace=True,
+                            skiprows=4,
+                            header=0,
+                            # index_col=0,
+                            )
+        salt_df = salt_df.iloc[:, 5:] # only cols we need
+        return salt_df
+    
+    def get_tot_salt_outlet(self, df, sim_start, cal_start, cal_end=None):
+        
+        df.index = pd.date_range(sim_start, periods=len(df))
+        if cal_end is None:
+            df = df[cal_start:]
+        else:
+            df = df[cal_start:cal_end]
+        df = df.iloc[:, :8]
+        df['tot_salt_loads'] = df.iloc[:, :].sum(axis=1)
+        df.drop(df.iloc[:, :-1], inplace=True, axis=1)
+        return df
+
     def load_salt_cha_result(self):
         if not os.path.exists('SALINITY/salt.output.channels'):
             raise Exception("'salt.output.channels' file not found")

@@ -7,17 +7,24 @@ from apexmf.objectivefunctions import bias, rsquared, rmse
 from matplotlib.pyplot import cm
 import matplotlib.patches as mpatches
 from statistics import mean
+import itertools
 
-def plot_one_one(df, simnam="sim", obdnam="obd", typenam="type", numcols=1, fsize=8):
+def plot_one_one(
+        df, simnam=None, obdnam=None, typenam=None,
+        showrmse=True, 
+        numcols=1, fsize=8, alpha=0.7, fignam=None):
     if simnam is None:
         simnam = "sim"
     if obdnam is None:
         obdnam = "obd"
     if typenam is None:
         typenam = "type"
+    if fignam is None:
+        fignam = "plot_oneToOne.jpg"
 
     fig, ax = plt.subplots(figsize=(6,5))
     colors = cm.rainbow(np.linspace(0, 1, len(df[typenam].unique())))
+    marker = itertools.cycle(("o","v","^","<",">","1","2","3","4","8","s","p","P","*","h","H","+","x","X","d")) 
     fmax = df.loc[:, [simnam, obdnam]].max().max()
     fmin = df.loc[:, [simnam, obdnam]].min().min()
     x_val = df.loc[:, simnam].tolist()
@@ -28,17 +35,28 @@ def plot_one_one(df, simnam="sim", obdnam="obd", typenam="type", numcols=1, fsiz
     m, b = np.polyfit(x_val, y_val, 1)
     rmse_tot = round(rmse(df.loc[:, obdnam], df.loc[:, simnam]), 2)
     ax.plot(np.array(x_val), (m*np.array(x_val)) + b, 'k', label='_nolegend_')
-    ax.text(
-            0.05, 0.9,
-            f'$R^2:$ {r_squared:.3f},  $RMSE:$ {rmse_tot}',
-            horizontalalignment='left',
-            bbox=dict(facecolor='gray', alpha=0.2),
-            transform=ax.transAxes,
-            fontsize=10
-            )
+    
+    if showrmse:
+        ax.text(
+                0.05, 0.9,
+                f'$R^2:$ {r_squared:.3f},  $RMSE:$ {rmse_tot}',
+                horizontalalignment='left',
+                bbox=dict(facecolor='gray', alpha=0.2),
+                transform=ax.transAxes,
+                fontsize=10
+                )
+    if not showrmse:
+        ax.text(
+                0.05, 0.9,
+                f'$R^2:$ {r_squared:.3f}',
+                horizontalalignment='left',
+                bbox=dict(facecolor='gray', alpha=0.2),
+                transform=ax.transAxes,
+                fontsize=10
+                )
     ax.text(
             0.95, 0.05,
-            f'$y={m:.2f}x{b:.2f}$',
+            f'$y={m:.2f}x{b:.2e}$',
             horizontalalignment='right',
             # bbox=dict(facecolor='gray', alpha=0.2),
             transform=ax.transAxes
@@ -49,13 +67,17 @@ def plot_one_one(df, simnam="sim", obdnam="obd", typenam="type", numcols=1, fsiz
         ax.scatter(
             sdf.loc[:, simnam], sdf.loc[:, obdnam], 
             color = c, 
-            alpha=0.7)
+            alpha=alpha, marker = next(marker))
         rsq_val = round(rsquared(sdf.loc[:, obdnam], sdf.loc[:, simnam]), 3)
         rmse_val = round(rmse(sdf.loc[:, obdnam], sdf.loc[:, simnam]), 3)
-        lgds.append(f"{tn} (rsq:{rsq_val}, rmse:{rmse_val})")
+        if showrmse:
+            lgds.append(f"{tn} (rsq:{rsq_val}, rmse:{rmse_val})")
+        if not showrmse:
+                lgds.append(f"{tn} (rsq:{rsq_val})")
+        
     ax.plot([fmin, fmax], [fmin, fmax], 'k--', alpha=0.2)
-    ax.set_xlabel("Modeled $(m)$", fontsize=10)
-    ax.set_ylabel("Measured $(m)$", fontsize=10)
+    ax.set_xlabel("Modeled", fontsize=10)
+    ax.set_ylabel("Measured", fontsize=10)
     ax.tick_params(axis='both', labelsize=10)
     plt.legend(
         lgds, 
@@ -63,7 +85,7 @@ def plot_one_one(df, simnam="sim", obdnam="obd", typenam="type", numcols=1, fsiz
         # ncols=numcols, 
         fontsize=fsize)
     # fig.tight_layout()
-    plt.savefig("plot_oneToOne.jpg", dpi=300, bbox_inches="tight")
+    plt.savefig(fignam, dpi=300, bbox_inches="tight")
     plt.show()
 
 
@@ -1021,3 +1043,26 @@ def plot_fast_sensitivity(
     ax.set_xlim(-0.5, len(parnames) - 0.5)
     plt.tight_layout()
     fig.savefig(fig_name, dpi=150)
+
+
+def filter_data(df, simnam=None, obdnam=None, pthreshold=None):
+    if simnam is None:
+        simnam = "sim"
+    if obdnam is None:
+        obdnam = "obd"
+
+    # Define the threshold for a 50% discrepancy
+    if pthreshold is None:
+        pthreshold = 50
+
+    # Calculate the absolute percentage discrepancy for each row
+    df['discrepancy'] = 100 * abs(df[obdnam] - df[simnam]) / df[obdnam]
+
+    # Filter rows based on the discrepancy threshold
+    filtered_df = df[df['discrepancy'] <= pthreshold]
+
+    # Drop the 'discrepancy' column if no longer needed
+    filtered_df = filtered_df.drop(columns=['discrepancy'])
+
+    # Print the filtered DataFrame
+    return filtered_df    
